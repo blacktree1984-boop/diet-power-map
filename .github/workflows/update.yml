@@ -1,36 +1,13 @@
-name: Update Political Data
-
-on:
-  schedule:
-    - cron: '0 0 * * 1' # 毎週月曜日に実行
-  workflow_dispatch: # 手動実行用
-
-permissions:
-  contents: write
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-          
-      - name: Install dependencies
-        # ここに scipy を追加しました
-        run: |
-          pip install requests networkx pandas scipy
-          
-      - name: Run analysis script
-        run: python analyze.py
-        
-      - name: Commit and push if changed
+- name: Commit and push if changed
         run: |
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
-          git add data.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update data" && git push)
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update data" && git push)
+          
+          # ファイルが存在するかチェックしてから add する
+          if [ -f data.json ]; then
+            git add data.json
+            # 変更がある場合のみコミット
+            git diff --quiet && git diff --staged --quiet || (git commit -m "Update data" && git push)
+          else
+            echo "data.json が見つかりませんでした。今回はスキップします。"
+          fi
