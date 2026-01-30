@@ -1,1 +1,1 @@
-{"nodes": [{"id": "データ取得失敗", "name": "データ取得失敗", "category": "エラー", "symbolSize": 30}], "links": [], "categories": [{"name": "エラー"}]}
+{"nodes": [{"id": "取得エラー", "name": "取得エラー(再実行してください)", "category": "エラー", "symbolSize": 50}, {"id": "サンプル太郎", "name": "サンプル太郎", "category": "与党", "symbolSize": 30}, {"id": "サンプル花子", "name": "サンプル花子", "category": "野党", "symbolSize": 30}], "links": [{"source": "サンプル太郎", "target": "サンプル花子", "value": 1}], "categories": [{"name": "エラー"}, {"name": "与党"}, {"name": "野党"}]}
