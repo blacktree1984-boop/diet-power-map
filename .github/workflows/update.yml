@@ -2,8 +2,8 @@ name: Update Political Data
 
 on:
   schedule:
-    - cron: '0 0 * * 1' # 毎週月曜日の深夜に実行
-  workflow_dispatch: # 手動実行ボタンも作る
+    - cron: '0 0 * * 1' # 毎週月曜日に実行
+  workflow_dispatch: # 手動実行用
 
 permissions:
   contents: write
@@ -20,8 +20,9 @@ jobs:
           python-version: '3.9'
           
       - name: Install dependencies
+        # ここに scipy を追加しました
         run: |
-          pip install requests networkx pandas
+          pip install requests networkx pandas scipy
           
       - name: Run analysis script
         run: python analyze.py
@@ -31,4 +32,5 @@ jobs:
           git config --global user.name 'GitHub Action'
           git config --global user.email 'action@github.com'
           git add data.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update data" && git push)
           git diff --quiet && git diff --staged --quiet || (git commit -m "Update data" && git push)
