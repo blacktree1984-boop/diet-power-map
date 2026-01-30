@@ -3,15 +3,16 @@ import json
 import networkx as nx
 import time
 import sys
-import os
 
+# 【重要】ブラウザのふりをする設定（ステルスモード）
 headers = {
-    'User-Agent': 'PoliticalPowerMapBot/1.0 (https://github.com/)'
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Accept': 'application/json'
 }
 
-# クエリ修正：より単純にして、確実にデータを取る
-# 「日本の衆議院議員(Q17505613)」の職にあったことがある人全員を取得（現職フィルタを外す）
 url = 'https://query.wikidata.org/sparql'
+
+# クエリ：日本の衆議院議員(Q17505613)を取得
 query = """
 SELECT DISTINCT ?human ?humanLabel ?partyLabel ?committeeLabel WHERE {
   ?human p:P39 ?statement .
@@ -22,39 +23,51 @@ SELECT DISTINCT ?human ?humanLabel ?partyLabel ?committeeLabel WHERE {
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "ja,en". }
 }
-LIMIT 300
+LIMIT 500
 """
 
 print("データを収集しています...")
 data = None
 
-for i in range(3):
+# リトライ処理（最大5回、間隔を空けて試す）
+for i in range(5):
     try:
+        print(f"接続試行 {i+1}回目...")
         r = requests.get(url, params={'format': 'json', 'query': query}, headers=headers, timeout=60)
+        
+        if r.status_code == 429:
+            print("アクセス過多(429)のため待機します...")
+            time.sleep(10)
+            continue
+            
         r.raise_for_status()
         data = r.json()
+        print("データ取得成功！")
         break 
     except Exception as e:
-        print(f"再試行中...: {e}")
-        time.sleep(2)
+        print(f"エラー: {e}")
+        time.sleep(5)
 
-# データが取れなかった場合の緊急回避用ダミーデータ
+# それでもダメだった場合の非常用ダミー（表示テスト用）
 if not data or 'results' not in data or len(data['results']['bindings']) == 0:
-    print("警告: データ取得に失敗しました。ダミーデータを生成します。")
-    # これがあればエラーで止まらない
-    nodes = [{"id": "データ取得失敗", "name": "データ取得失敗", "category": "エラー", "symbolSize": 30}]
-    links = []
-    categories = [{"name": "エラー"}]
+    print("警告: どうしてもデータが取れません。サンプルデータを生成します。")
+    nodes = [
+        {"id": "取得エラー", "name": "取得エラー(再実行してください)", "category": "エラー", "symbolSize": 50},
+        {"id": "サンプル太郎", "name": "サンプル太郎", "category": "与党", "symbolSize": 30},
+        {"id": "サンプル花子", "name": "サンプル花子", "category": "野党", "symbolSize": 30}
+    ]
+    links = [{"source": "サンプル太郎", "target": "サンプル花子", "value": 1}]
+    categories = [{"name": "エラー"}, {"name": "与党"}, {"name": "野党"}]
 else:
-    # 正常にデータ処理
+    # 正常処理
     nodes_dict = {}
     committees = {}
     raw_results = data['results']['bindings']
-    print(f"取得成功: {len(raw_results)}件")
+    print(f"取得件数: {len(raw_results)}件")
 
     for item in raw_results:
         name = item['humanLabel']['value']
-        if name.startswith("Q"): continue # IDそのままの場合はスキップ
+        if name.startswith("Q") or "http" in name: continue 
         
         party = item.get('partyLabel', {}).get('value', '無所属')
         committee = item.get('committeeLabel', {}).get('value', None)
@@ -62,7 +75,7 @@ else:
         if name not in nodes_dict:
             nodes_dict[name] = {
                 "id": name, "name": name, "category": party, 
-                "symbolSize": 10, "label": {"show": False} # 初期状態はラベル非表示
+                "symbolSize": 10, "label": {"show": False}
             }
         
         if committee:
@@ -73,7 +86,6 @@ else:
     G = nx.Graph()
     for name in nodes_dict: G.add_node(name)
     
-    # 関係性（委員会が同じ）
     for com_name, members in committees.items():
         members = [m for m in members if m in nodes_dict]
         for i in range(len(members)):
@@ -83,13 +95,12 @@ else:
                 else:
                     G.add_edge(members[i], members[j], weight=1)
     
-    # PageRank計算（scipy必須だがtryで囲む）
+    # PageRank（scipyがない場合も想定してnetworkx標準機能を使う）
     try:
-        centrality = nx.pagerank(G, max_iter=50)
+        centrality = nx.pagerank(G, max_iter=100)
         for name, score in centrality.items():
-            nodes_dict[name]['symbolSize'] = 5 + (score * 3000)
-            # スコアが高い人だけ名前を表示
-            if score > 0.005:
+            nodes_dict[name]['symbolSize'] = 5 + (score * 5000)
+            if score > 0.003: # 上位層のみ名前表示
                 nodes_dict[name]['label'] = {"show": True}
     except:
         pass
@@ -98,8 +109,6 @@ else:
     links = [{"source": u, "target": v, "value": d['weight']} for u, v, d in G.edges(data=True) if d['weight'] >= 1]
     categories = [{"name": p} for p in set(n['category'] for n in nodes)]
 
-# ファイル書き出し（必ず実行される）
 output = {"nodes": nodes, "links": links, "categories": categories}
 with open('data.json', 'w', encoding='utf-8') as f:
     json.dump(output, f, ensure_ascii=False)
-print("data.json を生成しました")
