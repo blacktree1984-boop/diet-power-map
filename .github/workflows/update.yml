@@ -21,7 +21,7 @@ jobs:
           
       - name: Install dependencies
         run: |
-          pip install requests networkx pandas scipy
+          pip install requests networkx pandas scipy sparqlwrapper
           
       - name: Run analysis script
         run: python analyze.py
@@ -36,4 +36,5 @@ jobs:
             git diff --quiet && git diff --staged --quiet || (git commit -m "Update data" && git push)
           else
             echo "data.json が見つかりませんでした。今回はスキップします。"
+          fi回はスキップします。"
           fi
