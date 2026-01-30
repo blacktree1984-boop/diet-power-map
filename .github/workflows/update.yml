@@ -28,13 +28,12 @@ jobs:
         
       - name: Commit and push if changed
         run: |
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'action@github.com'
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
           
           if [ -f data.json ]; then
             git add data.json
             git diff --quiet && git diff --staged --quiet || (git commit -m "Update data" && git push)
           else
-            echo "data.json が見つかりませんでした。今回はスキップします。"
-          fi回はスキップします。"
+            echo "data.json not found"
           fi
