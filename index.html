@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>AI解析：国会パワーバランス図</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        body { margin: 0; background: #222; color: #fff; font-family: sans-serif; }
+        #main { width: 100vw; height: 100vh; }
+        #info { position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.7); padding: 20px; border-radius: 8px; pointer-events: none; z-index: 100; }
+        h1 { margin: 0; font-size: 20px; color: #00d2ff; }
+        p { margin: 5px 0 0; font-size: 14px; color: #ccc; }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h1>国会パワーバランス解析</h1>
+        <p>更新: 毎週月曜 (自動)<br>ノードの大きさ: 推定政治力</p>
+    </div>
+    <div id="main"></div>
+    <script>
+        // data.json を読み込んでグラフを描画
+        fetch('data.json')
+            .then(response => {
+                if (!response.ok) throw new Error("HTTP error " + response.status);
+                return response.json();
+            })
+            .then(data => {
+                const chart = echarts.init(document.getElementById('main'), 'dark');
+                
+                // 力のある人だけ名前を表示する設定
+                data.nodes.forEach(n => {
+                    // symbolSizeが一定以上ならラベルを出す
+                    n.label = { show: n.symbolSize > 20 };
+                });
+
+                const option = {
+                    tooltip: { formatter: '{b}' }, // マウスホバーで名前表示
+                    legend: [{ 
+                        data: data.categories.map(c => c.name),
+                        textStyle: { color: '#ccc' }
+                    }],
+                    series: [{
+                        type: 'graph',
+                        layout: 'force',
+                        data: data.nodes,
+                        links: data.links,
+                        categories: data.categories,
+                        roam: true, // ズーム・移動許可
+                        draggable: true,
+                        force: { 
+                            repulsion: 200, // 反発力（ノード間の距離）
+                            edgeLength: 100,
+                            gravity: 0.1
+                        },
+                        lineStyle: { 
+                            color: 'source', 
+                            curveness: 0.3, 
+                            opacity: 0.6 
+                        }
+                    }]
+                };
+                chart.setOption(option);
+                window.addEventListener('resize', () => chart.resize());
+            })
+            .catch(e => {
+                document.getElementById('info').innerHTML += '<p style="color:red">データ読み込みエラー: ' + e + '</p>';
+            });
+    </script>
+</body>
+</html>
