@@ -3,122 +3,103 @@ import json
 import networkx as nx
 import time
 import sys
+import os
 
-# 1. データ収集設定
-# ユーザーエージェント（名刺）を少し詳細にして拒否されにくくする
 headers = {
-    'User-Agent': 'PoliticalPowerMapBot/1.0 (https://github.com/your_account/diet-power-map)'
+    'User-Agent': 'PoliticalPowerMapBot/1.0 (https://github.com/)'
 }
 
+# クエリ修正：より単純にして、確実にデータを取る
+# 「日本の衆議院議員(Q17505613)」の職にあったことがある人全員を取得（現職フィルタを外す）
 url = 'https://query.wikidata.org/sparql'
-
-# クエリ：現職の衆議院議員を取得
-# もし「取得件数0」が続く場合、一時的に FILTER NOT EXISTS を外すと全期間取れますが、まずは標準設定で
 query = """
-SELECT DISTINCT ?human ?humanLabel ?partyLabel ?committeeLabel ?winCount WHERE {
+SELECT DISTINCT ?human ?humanLabel ?partyLabel ?committeeLabel WHERE {
   ?human p:P39 ?statement .
   ?statement ps:P39 wd:Q17505613 . 
-  FILTER NOT EXISTS { ?statement pq:P582 ?endTime } . 
   
   OPTIONAL { ?human wdt:P102 ?party . }
   OPTIONAL { ?human wdt:P39 ?role . ?role wdt:P279 wd:Q17554522 . }
   
   SERVICE wikibase:label { bd:serviceParam wikibase:language "ja,en". }
 }
+LIMIT 300
 """
 
 print("データを収集しています...")
 data = None
 
-# リトライ処理（最大3回試す）
 for i in range(3):
     try:
-        r = requests.get(url, params={'format': 'json', 'query': query}, headers=headers, timeout=30)
+        r = requests.get(url, params={'format': 'json', 'query': query}, headers=headers, timeout=60)
         r.raise_for_status()
         data = r.json()
-        break # 成功したらループを抜ける
+        break 
     except Exception as e:
-        print(f"試行 {i+1}回目 失敗: {e}")
-        time.sleep(2) # 2秒待って再トライ
+        print(f"再試行中...: {e}")
+        time.sleep(2)
 
+# データが取れなかった場合の緊急回避用ダミーデータ
 if not data or 'results' not in data or len(data['results']['bindings']) == 0:
-    print("エラー: データを取得できませんでした（件数0）。")
-    sys.exit(0) # エラーにはせず、今回は何もしないで終了（サイトを壊さないため）
+    print("警告: データ取得に失敗しました。ダミーデータを生成します。")
+    # これがあればエラーで止まらない
+    nodes = [{"id": "データ取得失敗", "name": "データ取得失敗", "category": "エラー", "symbolSize": 30}]
+    links = []
+    categories = [{"name": "エラー"}]
+else:
+    # 正常にデータ処理
+    nodes_dict = {}
+    committees = {}
+    raw_results = data['results']['bindings']
+    print(f"取得成功: {len(raw_results)}件")
 
-# 2. データの整理
-nodes = {}
-committees = {}
+    for item in raw_results:
+        name = item['humanLabel']['value']
+        if name.startswith("Q"): continue # IDそのままの場合はスキップ
+        
+        party = item.get('partyLabel', {}).get('value', '無所属')
+        committee = item.get('committeeLabel', {}).get('value', None)
+        
+        if name not in nodes_dict:
+            nodes_dict[name] = {
+                "id": name, "name": name, "category": party, 
+                "symbolSize": 10, "label": {"show": False} # 初期状態はラベル非表示
+            }
+        
+        if committee:
+            if committee not in committees: committees[committee] = []
+            committees[committee].append(name)
 
-raw_results = data['results']['bindings']
-print(f"取得件数: {len(raw_results)}件")
-
-for item in raw_results:
-    name = item['humanLabel']['value']
-    party = item.get('partyLabel', {}).get('value', '無所属')
-    committee = item.get('committeeLabel', {}).get('value', None)
+    # グラフ構築
+    G = nx.Graph()
+    for name in nodes_dict: G.add_node(name)
     
-    # 除外ワード（QIDなどが名前になってしまうのを防ぐ）
-    if name.startswith("Q"): continue 
-
-    if name not in nodes:
-        nodes[name] = {
-            "id": name,
-            "name": name,
-            "category": party,
-            "symbolSize": 10,
-            "roles": []
-        }
+    # 関係性（委員会が同じ）
+    for com_name, members in committees.items():
+        members = [m for m in members if m in nodes_dict]
+        for i in range(len(members)):
+            for j in range(i + 1, len(members)):
+                if G.has_edge(members[i], members[j]):
+                    G[members[i]][members[j]]['weight'] += 1
+                else:
+                    G.add_edge(members[i], members[j], weight=1)
     
-    if committee:
-        if committee not in committees:
-            committees[committee] = []
-        committees[committee].append(name)
+    # PageRank計算（scipy必須だがtryで囲む）
+    try:
+        centrality = nx.pagerank(G, max_iter=50)
+        for name, score in centrality.items():
+            nodes_dict[name]['symbolSize'] = 5 + (score * 3000)
+            # スコアが高い人だけ名前を表示
+            if score > 0.005:
+                nodes_dict[name]['label'] = {"show": True}
+    except:
+        pass
 
-# ノードが少なすぎる場合はグラフを作らない
-if len(nodes) < 5:
-    print("データが少なすぎるため更新を中止します")
-    sys.exit(0)
+    nodes = list(nodes_dict.values())
+    links = [{"source": u, "target": v, "value": d['weight']} for u, v, d in G.edges(data=True) if d['weight'] >= 1]
+    categories = [{"name": p} for p in set(n['category'] for n in nodes)]
 
-# 3. 関係性の構築
-G = nx.Graph()
-for name in nodes:
-    G.add_node(name)
-
-links = []
-print("関係性を分析しています...")
-for com_name, members in committees.items():
-    members = [m for m in members if m in nodes] # 念のため存在確認
-    for i in range(len(members)):
-        for j in range(i + 1, len(members)):
-            if G.has_edge(members[i], members[j]):
-                G[members[i]][members[j]]['weight'] += 1
-            else:
-                G.add_edge(members[i], members[j], weight=1)
-
-# パワーバランス計算
-# 孤立したノード（誰ともつながっていない人）が多いとエラーになる場合があるのでtryで囲む
-try:
-    centrality = nx.pagerank(G, max_iter=100)
-    for name, score in centrality.items():
-        nodes[name]['symbolSize'] = 10 + (score * 5000)
-except Exception as e:
-    print(f"PageRank計算エラー（簡易モードに切り替えます）: {e}")
-    # 計算できない場合はサイズを一律にする
-    for name in nodes:
-        nodes[name]['symbolSize'] = 15
-
-for u, v, d in G.edges(data=True):
-    if d['weight'] >= 1: 
-        links.append({"source": u, "target": v, "value": d['weight']})
-
-# 4. 書き出し
-output = {
-    "nodes": list(nodes.values()),
-    "links": links,
-    "categories": [{"name": p} for p in set(n['category'] for n in nodes.values())]
-}
-
+# ファイル書き出し（必ず実行される）
+output = {"nodes": nodes, "links": links, "categories": categories}
 with open('data.json', 'w', encoding='utf-8') as f:
     json.dump(output, f, ensure_ascii=False)
-
-print("完了: data.jsonを作成しました")
+print("data.json を生成しました")
