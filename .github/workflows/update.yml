@@ -1,0 +1,137 @@
+name: Update Political Data
+
+on:
+  schedule:
+    # 毎週月曜日の午前9時(JST)に実行（UTCで0時）
+    - cron: '0 0 * * 1'
+  # 手動実行も可能
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests networkx pandas lxml html5lib beautifulsoup4
+          
+      - name: Run analysis script
+        run: |
+          python analyze.py
+        env:
+          PYTHONIOENCODING: utf-8
+          
+      - name: Verify data.json was created
+        run: |
+          if [ ! -f data.json ]; then
+            echo "Error: data.json was not created"
+            exit 1
+          fi
+          echo "data.json created successfully"
+          # JSONファイルの検証
+          python -c "import json; json.load(open('data.json'))"
+          echo "data.json is valid JSON"
+          
+      - name: Display statistics
+        run: |
+          if [ -f data.json ]; then
+            echo "File size: $(wc -c < data.json) bytes"
+            python -c "
+import json
+with open('data.json', 'r', encoding='utf-8') as f:
+    data = json.load(f)
+    print(f\"Nodes: {len(data.get('nodes', []))}\")
+    print(f\"Links: {len(data.get('links', []))}\")
+    print(f\"Categories: {len(data.get('categories', []))}\")
+"
+          fi
+          
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          
+          # data.jsonをステージング
+          git add data.json
+          
+          # 変更があればコミット
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🤖 Update political data - $(date '+%Y-%m-%d %H:%M:%S')"
+            git push
+            echo "Changes committed and pushed successfully"
+          fi
+          
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: political-data
+          path: data.json
+          retention-days: 30
+```
+
+4. **「Commit new file」**をクリック
+
+5. **数秒待って**から、**「Actions」**タブをクリック
+
+これで左サイドバーに「Update Political Data」が表示されるはずです！
+
+---
+
+### 原因2: GitHub Actionsが無効になっている
+
+**確認方法**：
+1. **「Settings」**タブ → **「Actions」** → **「General」**
+2. 「Actions permissions」を確認
+
+**解決方法**：
+- **「Allow all actions and reusable workflows」**を選択
+- **「Save」**をクリック
+- **「Actions」**タブに戻って確認
+
+---
+
+### 原因3: YAMLファイルに文法エラーがある
+
+**確認方法**：
+1. リポジトリで `.github/workflows/update.yml` を開く
+2. ファイルの内容を確認
+
+**よくあるエラー**：
+- インデント（スペース）がズレている
+- コピペ時に余分な文字が入った
+- ファイル拡張子が `.yml` ではなく `.txt` や `.yaml` になっている
+
+**解決方法**：
+- 上記の正しい内容を再度コピー&ペーストして上書き
+
+---
+
+## ✅ 正しく配置できたか確認する方法
+
+リポジトリのファイル一覧で、以下のように表示されていればOK：
+```
+📁 .github
+  📁 workflows
+    📄 update.yml
+📄 analyze.py
+📄 index.html
+📄 README.md
+📄 requirements.txt
+...（その他のファイル）
