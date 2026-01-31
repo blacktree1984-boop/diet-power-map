@@ -1,0 +1,352 @@
+{
+  "nodes": [
+    {
+      "id": "岸田文雄",
+      "name": "岸田文雄",
+      "category": "自由民主党",
+      "symbolSize": 50,
+      "value": 10,
+      "label": {
+        "show": true,
+        "fontSize": 20
+      }
+    },
+    {
+      "id": "茂木敏充",
+      "name": "茂木敏充",
+      "category": "自由民主党",
+      "symbolSize": 45,
+      "value": 9,
+      "label": {
+        "show": true,
+        "fontSize": 19
+      }
+    },
+    {
+      "id": "河野太郎",
+      "name": "河野太郎",
+      "category": "自由民主党",
+      "symbolSize": 40,
+      "value": 8,
+      "label": {
+        "show": true,
+        "fontSize": 18
+      }
+    },
+    {
+      "id": "小泉進次郎",
+      "name": "小泉進次郎",
+      "category": "自由民主党",
+      "symbolSize": 30,
+      "value": 5,
+      "label": {
+        "show": true,
+        "fontSize": 15
+      }
+    },
+    {
+      "id": "枝野幸男",
+      "name": "枝野幸男",
+      "category": "立憲民主党",
+      "symbolSize": 45,
+      "value": 9,
+      "label": {
+        "show": true,
+        "fontSize": 19
+      }
+    },
+    {
+      "id": "蓮舫",
+      "name": "蓮舫",
+      "category": "立憲民主党",
+      "symbolSize": 30,
+      "value": 5,
+      "label": {
+        "show": true,
+        "fontSize": 15
+      }
+    },
+    {
+      "id": "辻元清美",
+      "name": "辻元清美",
+      "category": "立憲民主党",
+      "symbolSize": 40,
+      "value": 8,
+      "label": {
+        "show": true,
+        "fontSize": 18
+      }
+    },
+    {
+      "id": "山口那津男",
+      "name": "山口那津男",
+      "category": "公明党",
+      "symbolSize": 40,
+      "value": 8,
+      "label": {
+        "show": true,
+        "fontSize": 18
+      }
+    },
+    {
+      "id": "石井啓一",
+      "name": "石井啓一",
+      "category": "公明党",
+      "symbolSize": 35,
+      "value": 7,
+      "label": {
+        "show": true,
+        "fontSize": 17
+      }
+    },
+    {
+      "id": "志位和夫",
+      "name": "志位和夫",
+      "category": "日本共産党",
+      "symbolSize": 35,
+      "value": 7,
+      "label": {
+        "show": true,
+        "fontSize": 17
+      }
+    },
+    {
+      "id": "馬場伸幸",
+      "name": "馬場伸幸",
+      "category": "日本維新の会",
+      "symbolSize": 30,
+      "value": 5,
+      "label": {
+        "show": true,
+        "fontSize": 15
+      }
+    },
+    {
+      "id": "吉村洋文",
+      "name": "吉村洋文",
+      "category": "日本維新の会",
+      "symbolSize": 25,
+      "value": 4,
+      "label": {
+        "show": false,
+        "fontSize": 14
+      }
+    },
+    {
+      "id": "玉木雄一郎",
+      "name": "玉木雄一郎",
+      "category": "国民民主党",
+      "symbolSize": 30,
+      "value": 5,
+      "label": {
+        "show": true,
+        "fontSize": 15
+      }
+    },
+    {
+      "id": "前原誠司",
+      "name": "前原誠司",
+      "category": "国民民主党",
+      "symbolSize": 40,
+      "value": 8,
+      "label": {
+        "show": true,
+        "fontSize": 18
+      }
+    }
+  ],
+  "links": [
+    {
+      "source": "岸田文雄",
+      "target": "茂木敏充",
+      "value": 2,
+      "lineStyle": {
+        "width": 2
+      }
+    },
+    {
+      "source": "岸田文雄",
+      "target": "河野太郎",
+      "value": 2,
+      "lineStyle": {
+        "width": 2
+      }
+    },
+    {
+      "source": "岸田文雄",
+      "target": "小泉進次郎",
+      "value": 1,
+      "lineStyle": {
+        "width": 1,
+        "opacity": 0.3
+      }
+    },
+    {
+      "source": "茂木敏充",
+      "target": "河野太郎",
+      "value": 1,
+      "lineStyle": {
+        "width": 1
+      }
+    },
+    {
+      "source": "河野太郎",
+      "target": "小泉進次郎",
+      "value": 1,
+      "lineStyle": {
+        "width": 1
+      }
+    },
+    {
+      "source": "小泉進次郎",
+      "target": "岸田文雄",
+      "value": 1,
+      "lineStyle": {
+        "width": 1
+      }
+    },
+    {
+      "source": "枝野幸男",
+      "target": "蓮舫",
+      "value": 2,
+      "lineStyle": {
+        "width": 2
+      }
+    },
+    {
+      "source": "枝野幸男",
+      "target": "辻元清美",
+      "value": 2,
+      "lineStyle": {
+        "width": 2
+      }
+    },
+    {
+      "source": "蓮舫",
+      "target": "辻元清美",
+      "value": 1,
+      "lineStyle": {
+        "width": 1
+      }
+    },
+    {
+      "source": "辻元清美",
+      "target": "枝野幸男",
+      "value": 1,
+      "lineStyle": {
+        "width": 1
+      }
+    },
+    {
+      "source": "山口那津男",
+      "target": "石井啓一",
+      "value": 2,
+      "lineStyle": {
+        "width": 2
+      }
+    },
+    {
+      "source": "石井啓一",
+      "target": "山口那津男",
+      "value": 1,
+      "lineStyle": {
+        "width": 1
+      }
+    },
+    {
+      "source": "馬場伸幸",
+      "target": "吉村洋文",
+      "value": 2,
+      "lineStyle": {
+        "width": 2
+      }
+    },
+    {
+      "source": "吉村洋文",
+      "target": "馬場伸幸",
+      "value": 1,
+      "lineStyle": {
+        "width": 1
+      }
+    },
+    {
+      "source": "玉木雄一郎",
+      "target": "前原誠司",
+      "value": 2,
+      "lineStyle": {
+        "width": 2
+      }
+    },
+    {
+      "source": "前原誠司",
+      "target": "玉木雄一郎",
+      "value": 1,
+      "lineStyle": {
+        "width": 1
+      }
+    },
+    {
+      "source": "岸田文雄",
+      "target": "山口那津男",
+      "value": 1,
+      "lineStyle": {
+        "width": 2,
+        "type": "dashed",
+        "color": "#ff9800"
+      }
+    },
+    {
+      "source": "茂木敏充",
+      "target": "山口那津男",
+      "value": 1,
+      "lineStyle": {
+        "width": 2,
+        "type": "dashed",
+        "color": "#ff9800"
+      }
+    },
+    {
+      "source": "河野太郎",
+      "target": "石井啓一",
+      "value": 1,
+      "lineStyle": {
+        "width": 2,
+        "type": "dashed",
+        "color": "#ff9800"
+      }
+    }
+  ],
+  "categories": [
+    {
+      "name": "自由民主党"
+    },
+    {
+      "name": "立憲民主党"
+    },
+    {
+      "name": "公明党"
+    },
+    {
+      "name": "日本共産党"
+    },
+    {
+      "name": "日本維新の会"
+    },
+    {
+      "name": "国民民主党"
+    }
+  ],
+  "stats": {
+    "total_members": 14,
+    "total_parties": 6,
+    "last_updated": "2026-02-01 12:00:00",
+    "party_sizes": {
+      "自由民主党": 4,
+      "立憲民主党": 3,
+      "公明党": 2,
+      "日本共産党": 1,
+      "日本維新の会": 2,
+      "国民民主党": 2
+    }
+  }
+}

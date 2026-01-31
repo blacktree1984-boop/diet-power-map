@@ -1,0 +1,13 @@
+# 国会パワーバランス可視化システム - 依存ライブラリ
+
+# データ処理
+pandas>=2.0.0
+networkx>=3.0
+
+# HTMLパーサー（pandas.read_html用）
+lxml>=4.9.0
+html5lib>=1.1
+
+# オプション: より高度なスクレイピングが必要な場合
+# beautifulsoup4>=4.12.0
+# requests>=2.31.0
