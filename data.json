@@ -1,352 +1,925 @@
 {
   "nodes": [
     {
-      "id": "岸田文雄",
+      "id": "ishiba_shigeru",
+      "name": "石破茂",
+      "nameReading": "いしばしげる",
+      "category": "自由民主党",
+      "symbolSize": 55,
+      "value": 12,
+      "position": "内閣総理大臣",
+      "district": "鳥取1区",
+      "birthYear": 1957,
+      "politicalStance": {
+        "conservative": 55,
+        "liberal": 45,
+        "economic": "中道",
+        "security": "リアリスト",
+        "constitutional": "慎重派"
+      },
+      "policies": {
+        "憲法改正": "条件付き賛成",
+        "安全保障": "専守防衛重視",
+        "経済政策": "地方創生推進",
+        "エネルギー": "原発縮小",
+        "社会保障": "持続可能性重視"
+      },
+      "supporters": [
+        {"name": "防衛産業関連", "type": "業界団体"},
+        {"name": "農協", "type": "業界団体"}
+      ],
+      "committees": ["安全保障", "地方創生"],
+      "influence": 95,
+      "faction": "無派閥（旧水月会）",
+      "label": {"show": true, "fontSize": 22}
+    },
+    {
+      "id": "kishida_fumio",
       "name": "岸田文雄",
+      "nameReading": "きしだふみお",
       "category": "自由民主党",
       "symbolSize": 50,
       "value": 10,
-      "label": {
-        "show": true,
-        "fontSize": 20
-      }
+      "position": "前内閣総理大臣",
+      "district": "広島1区",
+      "birthYear": 1957,
+      "politicalStance": {
+        "conservative": 50,
+        "liberal": 50,
+        "economic": "中道",
+        "security": "現実主義",
+        "constitutional": "積極派"
+      },
+      "policies": {
+        "憲法改正": "賛成",
+        "安全保障": "日米同盟強化",
+        "経済政策": "新しい資本主義",
+        "エネルギー": "原発活用",
+        "社会保障": "全世代型"
+      },
+      "supporters": [
+        {"name": "経団連", "type": "経済団体"},
+        {"name": "広島財界", "type": "地元経済界"}
+      ],
+      "committees": ["外務", "経済"],
+      "influence": 88,
+      "faction": "宏池会",
+      "label": {"show": true, "fontSize": 20}
     },
     {
-      "id": "茂木敏充",
+      "id": "motegi_toshimitsu",
       "name": "茂木敏充",
+      "nameReading": "もてぎとしみつ",
       "category": "自由民主党",
-      "symbolSize": 45,
-      "value": 9,
-      "label": {
-        "show": true,
-        "fontSize": 19
-      }
+      "symbolSize": 48,
+      "value": 10,
+      "position": "自民党幹事長",
+      "district": "栃木5区",
+      "birthYear": 1955,
+      "politicalStance": {
+        "conservative": 60,
+        "liberal": 40,
+        "economic": "自由経済",
+        "security": "強硬派",
+        "constitutional": "積極派"
+      },
+      "policies": {
+        "憲法改正": "積極推進",
+        "安全保障": "防衛力強化",
+        "経済政策": "規制緩和",
+        "エネルギー": "原発推進",
+        "社会保障": "効率化"
+      },
+      "supporters": [
+        {"name": "日本商工会議所", "type": "経済団体"},
+        {"name": "自動車産業", "type": "業界団体"}
+      ],
+      "committees": ["経済産業", "外務"],
+      "influence": 90,
+      "faction": "平成研究会",
+      "label": {"show": true, "fontSize": 19}
     },
     {
-      "id": "河野太郎",
+      "id": "kono_taro",
       "name": "河野太郎",
+      "nameReading": "こうのたろう",
       "category": "自由民主党",
-      "symbolSize": 40,
-      "value": 8,
-      "label": {
-        "show": true,
-        "fontSize": 18
-      }
+      "symbolSize": 45,
+      "value": 9,
+      "position": "デジタル大臣",
+      "district": "神奈川15区",
+      "birthYear": 1963,
+      "politicalStance": {
+        "conservative": 40,
+        "liberal": 60,
+        "economic": "改革派",
+        "security": "現実主義",
+        "constitutional": "慎重派"
+      },
+      "policies": {
+        "憲法改正": "慎重",
+        "安全保障": "国際協調",
+        "経済政策": "行政改革",
+        "エネルギー": "再エネ推進",
+        "社会保障": "デジタル化"
+      },
+      "supporters": [
+        {"name": "IT企業連合", "type": "業界団体"},
+        {"name": "再エネ業界", "type": "業界団体"}
+      ],
+      "committees": ["デジタル", "行政改革"],
+      "influence": 82,
+      "faction": "麻生派",
+      "label": {"show": true, "fontSize": 18}
     },
     {
-      "id": "小泉進次郎",
+      "id": "koizumi_shinjiro",
       "name": "小泉進次郎",
+      "nameReading": "こいずみしんじろう",
       "category": "自由民主党",
-      "symbolSize": 30,
-      "value": 5,
-      "label": {
-        "show": true,
-        "fontSize": 15
-      }
+      "symbolSize": 38,
+      "value": 6,
+      "position": "元環境大臣",
+      "district": "神奈川11区",
+      "birthYear": 1981,
+      "politicalStance": {
+        "conservative": 45,
+        "liberal": 55,
+        "economic": "改革派",
+        "security": "現実主義",
+        "constitutional": "慎重派"
+      },
+      "policies": {
+        "憲法改正": "慎重",
+        "安全保障": "専守防衛",
+        "経済政策": "グリーン成長",
+        "エネルギー": "脱炭素",
+        "社会保障": "次世代投資"
+      },
+      "supporters": [
+        {"name": "環境関連企業", "type": "業界団体"},
+        {"name": "若手経営者", "type": "支援団体"}
+      ],
+      "committees": ["環境", "厚生労働"],
+      "influence": 75,
+      "faction": "無派閥",
+      "label": {"show": true, "fontSize": 16}
     },
     {
-      "id": "枝野幸男",
+      "id": "takaichi_sanae",
+      "name": "高市早苗",
+      "nameReading": "たかいちさなえ",
+      "category": "自由民主党",
+      "symbolSize": 45,
+      "value": 9,
+      "position": "経済安全保障担当大臣",
+      "district": "奈良2区",
+      "birthYear": 1961,
+      "politicalStance": {
+        "conservative": 85,
+        "liberal": 15,
+        "economic": "国家資本主義",
+        "security": "強硬派",
+        "constitutional": "積極派"
+      },
+      "policies": {
+        "憲法改正": "積極推進",
+        "安全保障": "防衛費倍増",
+        "経済政策": "経済安保",
+        "エネルギー": "原発推進",
+        "社会保障": "伝統的家族"
+      },
+      "supporters": [
+        {"name": "日本会議", "type": "思想団体"},
+        {"name": "防衛産業", "type": "業界団体"}
+      ],
+      "committees": ["経済安全保障", "総務"],
+      "influence": 80,
+      "faction": "無派閥（旧安倍派支持）",
+      "label": {"show": true, "fontSize": 18}
+    },
+    {
+      "id": "noda_yoshihiko",
+      "name": "野田佳彦",
+      "nameReading": "のだよしひこ",
+      "category": "立憲民主党",
+      "symbolSize": 50,
+      "value": 10,
+      "position": "立憲民主党代表",
+      "district": "千葉4区",
+      "birthYear": 1957,
+      "politicalStance": {
+        "conservative": 50,
+        "liberal": 50,
+        "economic": "財政規律",
+        "security": "現実主義",
+        "constitutional": "護憲派"
+      },
+      "policies": {
+        "憲法改正": "反対",
+        "安全保障": "専守防衛",
+        "経済政策": "財政再建",
+        "エネルギー": "原発ゼロ",
+        "社会保障": "分厚い中間層"
+      },
+      "supporters": [
+        {"name": "連合", "type": "労働組合"},
+        {"name": "市民連合", "type": "市民団体"}
+      ],
+      "committees": ["財務金融", "予算"],
+      "influence": 85,
+      "faction": "花斉会",
+      "label": {"show": true, "fontSize": 20}
+    },
+    {
+      "id": "edano_yukio",
       "name": "枝野幸男",
+      "nameReading": "えだのゆきお",
       "category": "立憲民主党",
       "symbolSize": 45,
       "value": 9,
-      "label": {
-        "show": true,
-        "fontSize": 19
-      }
+      "position": "前立憲民主党代表",
+      "district": "埼玉5区",
+      "birthYear": 1964,
+      "politicalStance": {
+        "conservative": 30,
+        "liberal": 70,
+        "economic": "再分配",
+        "security": "平和主義",
+        "constitutional": "護憲派"
+      },
+      "policies": {
+        "憲法改正": "反対",
+        "安全保障": "専守防衛",
+        "経済政策": "格差是正",
+        "エネルギー": "原発ゼロ",
+        "社会保障": "拡充"
+      },
+      "supporters": [
+        {"name": "連合", "type": "労働組合"},
+        {"name": "市民連合", "type": "市民団体"}
+      ],
+      "committees": ["憲法審査", "経済産業"],
+      "influence": 78,
+      "faction": "サンクチュアリ",
+      "label": {"show": true, "fontSize": 19}
     },
     {
-      "id": "蓮舫",
-      "name": "蓮舫",
+      "id": "izumi_kenta",
+      "name": "泉健太",
+      "nameReading": "いずみけんた",
       "category": "立憲民主党",
-      "symbolSize": 30,
-      "value": 5,
-      "label": {
-        "show": true,
-        "fontSize": 15
-      }
+      "symbolSize": 40,
+      "value": 7,
+      "position": "前立憲民主党代表",
+      "district": "京都3区",
+      "birthYear": 1974,
+      "politicalStance": {
+        "conservative": 40,
+        "liberal": 60,
+        "economic": "中道左派",
+        "security": "現実主義",
+        "constitutional": "護憲派"
+      },
+      "policies": {
+        "憲法改正": "反対",
+        "安全保障": "専守防衛",
+        "経済政策": "生活者重視",
+        "エネルギー": "再エネ推進",
+        "社会保障": "拡充"
+      },
+      "supporters": [
+        {"name": "連合", "type": "労働組合"}
+      ],
+      "committees": ["厚生労働", "予算"],
+      "influence": 65,
+      "faction": "なし",
+      "label": {"show": true, "fontSize": 17}
     },
     {
-      "id": "辻元清美",
+      "id": "tsujimoto_kiyomi",
       "name": "辻元清美",
+      "nameReading": "つじもときよみ",
       "category": "立憲民主党",
-      "symbolSize": 40,
+      "symbolSize": 42,
       "value": 8,
-      "label": {
-        "show": true,
-        "fontSize": 18
-      }
+      "position": "参議院議員",
+      "district": "比例（参）",
+      "birthYear": 1960,
+      "politicalStance": {
+        "conservative": 15,
+        "liberal": 85,
+        "economic": "福祉国家",
+        "security": "平和主義",
+        "constitutional": "護憲派"
+      },
+      "policies": {
+        "憲法改正": "強く反対",
+        "安全保障": "非武装中立",
+        "経済政策": "再分配",
+        "エネルギー": "原発ゼロ",
+        "社会保障": "大幅拡充"
+      },
+      "supporters": [
+        {"name": "社民系労組", "type": "労働組合"},
+        {"name": "平和団体", "type": "市民団体"}
+      ],
+      "committees": ["予算", "国土交通"],
+      "influence": 70,
+      "faction": "旧社民系",
+      "label": {"show": true, "fontSize": 18}
     },
     {
-      "id": "山口那津男",
+      "id": "yamaguchi_natsuo",
       "name": "山口那津男",
+      "nameReading": "やまぐちなつお",
       "category": "公明党",
-      "symbolSize": 40,
+      "symbolSize": 45,
       "value": 8,
-      "label": {
-        "show": true,
-        "fontSize": 18
-      }
+      "position": "公明党代表",
+      "district": "比例（参）",
+      "birthYear": 1952,
+      "politicalStance": {
+        "conservative": 45,
+        "liberal": 55,
+        "economic": "中道",
+        "security": "平和主義",
+        "constitutional": "慎重派"
+      },
+      "policies": {
+        "憲法改正": "加憲",
+        "安全保障": "平和外交",
+        "経済政策": "中小企業支援",
+        "エネルギー": "原発縮小",
+        "社会保障": "充実"
+      },
+      "supporters": [
+        {"name": "創価学会", "type": "宗教団体"},
+        {"name": "中小企業団体", "type": "経済団体"}
+      ],
+      "committees": ["予算", "外務"],
+      "influence": 75,
+      "faction": "なし",
+      "label": {"show": true, "fontSize": 18}
     },
     {
-      "id": "石井啓一",
+      "id": "ishii_keiichi",
       "name": "石井啓一",
+      "nameReading": "いしいけいいち",
       "category": "公明党",
-      "symbolSize": 35,
+      "symbolSize": 40,
       "value": 7,
-      "label": {
-        "show": true,
-        "fontSize": 17
-      }
+      "position": "公明党幹事長",
+      "district": "比例北関東",
+      "birthYear": 1958,
+      "politicalStance": {
+        "conservative": 45,
+        "liberal": 55,
+        "economic": "中道",
+        "security": "現実主義",
+        "constitutional": "慎重派"
+      },
+      "policies": {
+        "憲法改正": "慎重",
+        "安全保障": "平和外交",
+        "経済政策": "生活者重視",
+        "エネルギー": "再エネ推進",
+        "社会保障": "充実"
+      },
+      "supporters": [
+        {"name": "創価学会", "type": "宗教団体"}
+      ],
+      "committees": ["国土交通", "財務金融"],
+      "influence": 68,
+      "faction": "なし",
+      "label": {"show": true, "fontSize": 17}
     },
     {
-      "id": "志位和夫",
+      "id": "shii_kazuo",
       "name": "志位和夫",
+      "nameReading": "しいかずお",
       "category": "日本共産党",
-      "symbolSize": 35,
-      "value": 7,
-      "label": {
-        "show": true,
-        "fontSize": 17
-      }
+      "symbolSize": 42,
+      "value": 8,
+      "position": "日本共産党議長",
+      "district": "比例南関東",
+      "birthYear": 1954,
+      "politicalStance": {
+        "conservative": 5,
+        "liberal": 95,
+        "economic": "社会主義",
+        "security": "非武装中立",
+        "constitutional": "護憲派"
+      },
+      "policies": {
+        "憲法改正": "強く反対",
+        "安全保障": "日米安保破棄",
+        "経済政策": "大企業課税",
+        "エネルギー": "即時原発ゼロ",
+        "社会保障": "大幅拡充"
+      },
+      "supporters": [
+        {"name": "全労連", "type": "労働組合"},
+        {"name": "民医連", "type": "医療団体"}
+      ],
+      "committees": ["予算", "外務"],
+      "influence": 60,
+      "faction": "なし",
+      "label": {"show": true, "fontSize": 17}
     },
     {
-      "id": "馬場伸幸",
+      "id": "tamura_tomoko",
+      "name": "田村智子",
+      "nameReading": "たむらともこ",
+      "category": "日本共産党",
+      "symbolSize": 38,
+      "value": 5,
+      "position": "日本共産党委員長",
+      "district": "比例（参）",
+      "birthYear": 1965,
+      "politicalStance": {
+        "conservative": 5,
+        "liberal": 95,
+        "economic": "社会主義",
+        "security": "非武装中立",
+        "constitutional": "護憲派"
+      },
+      "policies": {
+        "憲法改正": "強く反対",
+        "安全保障": "日米安保破棄",
+        "経済政策": "消費税廃止",
+        "エネルギー": "即時原発ゼロ",
+        "社会保障": "大幅拡充"
+      },
+      "supporters": [
+        {"name": "全労連", "type": "労働組合"},
+        {"name": "新日本婦人の会", "type": "市民団体"}
+      ],
+      "committees": ["厚生労働", "予算"],
+      "influence": 55,
+      "faction": "なし",
+      "label": {"show": true, "fontSize": 15}
+    },
+    {
+      "id": "baba_nobuyuki",
       "name": "馬場伸幸",
+      "nameReading": "ばばのぶゆき",
       "category": "日本維新の会",
-      "symbolSize": 30,
-      "value": 5,
-      "label": {
-        "show": true,
-        "fontSize": 15
-      }
+      "symbolSize": 42,
+      "value": 6,
+      "position": "日本維新の会代表",
+      "district": "大阪17区",
+      "birthYear": 1965,
+      "politicalStance": {
+        "conservative": 65,
+        "liberal": 35,
+        "economic": "新自由主義",
+        "security": "強硬派",
+        "constitutional": "積極派"
+      },
+      "policies": {
+        "憲法改正": "積極推進",
+        "安全保障": "防衛力強化",
+        "経済政策": "規制改革",
+        "エネルギー": "原発維持",
+        "社会保障": "効率化"
+      },
+      "supporters": [
+        {"name": "関西経済連合会", "type": "経済団体"},
+        {"name": "中小企業経営者", "type": "支援団体"}
+      ],
+      "committees": ["予算", "総務"],
+      "influence": 72,
+      "faction": "なし",
+      "label": {"show": true, "fontSize": 16}
     },
     {
-      "id": "吉村洋文",
+      "id": "yoshimura_hirofumi",
       "name": "吉村洋文",
+      "nameReading": "よしむらひろふみ",
       "category": "日本維新の会",
-      "symbolSize": 25,
-      "value": 4,
-      "label": {
-        "show": false,
-        "fontSize": 14
-      }
-    },
-    {
-      "id": "玉木雄一郎",
-      "name": "玉木雄一郎",
-      "category": "国民民主党",
-      "symbolSize": 30,
+      "symbolSize": 45,
       "value": 5,
-      "label": {
-        "show": true,
-        "fontSize": 15
-      }
+      "position": "大阪府知事（維新共同代表）",
+      "district": "大阪府知事",
+      "birthYear": 1975,
+      "politicalStance": {
+        "conservative": 60,
+        "liberal": 40,
+        "economic": "新自由主義",
+        "security": "現実主義",
+        "constitutional": "積極派"
+      },
+      "policies": {
+        "憲法改正": "賛成",
+        "安全保障": "防衛力強化",
+        "経済政策": "成長戦略",
+        "エネルギー": "原発活用",
+        "社会保障": "効率化"
+      },
+      "supporters": [
+        {"name": "関西経済界", "type": "経済団体"},
+        {"name": "IR推進派", "type": "業界団体"}
+      ],
+      "committees": [],
+      "influence": 80,
+      "faction": "なし",
+      "label": {"show": true, "fontSize": 16}
     },
     {
-      "id": "前原誠司",
-      "name": "前原誠司",
+      "id": "tamaki_yuichiro",
+      "name": "玉木雄一郎",
+      "nameReading": "たまきゆういちろう",
       "category": "国民民主党",
+      "symbolSize": 42,
+      "value": 6,
+      "position": "国民民主党代表",
+      "district": "香川2区",
+      "birthYear": 1969,
+      "politicalStance": {
+        "conservative": 50,
+        "liberal": 50,
+        "economic": "中道",
+        "security": "現実主義",
+        "constitutional": "慎重派"
+      },
+      "policies": {
+        "憲法改正": "議論賛成",
+        "安全保障": "現実路線",
+        "経済政策": "給料アップ",
+        "エネルギー": "原発活用",
+        "社会保障": "現役世代支援"
+      },
+      "supporters": [
+        {"name": "電力総連", "type": "労働組合"},
+        {"name": "自動車総連", "type": "労働組合"}
+      ],
+      "committees": ["経済産業", "財務金融"],
+      "influence": 70,
+      "faction": "なし",
+      "label": {"show": true, "fontSize": 16}
+    },
+    {
+      "id": "maehara_seiji",
+      "name": "前原誠司",
+      "nameReading": "まえはらせいじ",
+      "category": "日本維新の会",
+      "symbolSize": 42,
+      "value": 9,
+      "position": "教育無償化を実現する会代表",
+      "district": "京都2区",
+      "birthYear": 1962,
+      "politicalStance": {
+        "conservative": 55,
+        "liberal": 45,
+        "economic": "新自由主義",
+        "security": "強硬派",
+        "constitutional": "積極派"
+      },
+      "policies": {
+        "憲法改正": "賛成",
+        "安全保障": "防衛力強化",
+        "経済政策": "成長重視",
+        "エネルギー": "原発活用",
+        "社会保障": "教育投資"
+      },
+      "supporters": [
+        {"name": "松下政経塾OB", "type": "支援団体"},
+        {"name": "京都財界", "type": "地元経済界"}
+      ],
+      "committees": ["外務", "安全保障"],
+      "influence": 58,
+      "faction": "凌雲会",
+      "label": {"show": true, "fontSize": 18}
+    },
+    {
+      "id": "fukushima_mizuho",
+      "name": "福島みずほ",
+      "nameReading": "ふくしまみずほ",
+      "category": "社会民主党",
+      "symbolSize": 38,
+      "value": 5,
+      "position": "社会民主党党首",
+      "district": "比例（参）",
+      "birthYear": 1955,
+      "politicalStance": {
+        "conservative": 5,
+        "liberal": 95,
+        "economic": "福祉国家",
+        "security": "平和主義",
+        "constitutional": "護憲派"
+      },
+      "policies": {
+        "憲法改正": "強く反対",
+        "安全保障": "非武装中立",
+        "経済政策": "再分配",
+        "エネルギー": "即時原発ゼロ",
+        "社会保障": "大幅拡充"
+      },
+      "supporters": [
+        {"name": "社民系労組", "type": "労働組合"},
+        {"name": "平和フォーラム", "type": "市民団体"}
+      ],
+      "committees": ["厚生労働", "法務"],
+      "influence": 45,
+      "faction": "なし",
+      "label": {"show": true, "fontSize": 15}
+    },
+    {
+      "id": "suzuki_muneo",
+      "name": "鈴木宗男",
+      "nameReading": "すずきむねお",
+      "category": "日本維新の会",
       "symbolSize": 40,
       "value": 8,
-      "label": {
-        "show": true,
-        "fontSize": 18
-      }
+      "position": "参議院議員",
+      "district": "比例（参）",
+      "birthYear": 1948,
+      "politicalStance": {
+        "conservative": 60,
+        "liberal": 40,
+        "economic": "地方重視",
+        "security": "独自路線",
+        "constitutional": "中立"
+      },
+      "policies": {
+        "憲法改正": "慎重",
+        "安全保障": "ロシア対話重視",
+        "経済政策": "地方創生",
+        "エネルギー": "資源外交",
+        "社会保障": "地方充実"
+      },
+      "supporters": [
+        {"name": "北海道経済界", "type": "地元経済界"},
+        {"name": "建設業界", "type": "業界団体"}
+      ],
+      "committees": ["外務", "沖縄北方"],
+      "influence": 50,
+      "faction": "なし",
+      "label": {"show": true, "fontSize": 17}
     }
   ],
   "links": [
-    {
-      "source": "岸田文雄",
-      "target": "茂木敏充",
-      "value": 2,
-      "lineStyle": {
-        "width": 2
-      }
-    },
-    {
-      "source": "岸田文雄",
-      "target": "河野太郎",
-      "value": 2,
-      "lineStyle": {
-        "width": 2
-      }
-    },
-    {
-      "source": "岸田文雄",
-      "target": "小泉進次郎",
-      "value": 1,
-      "lineStyle": {
-        "width": 1,
-        "opacity": 0.3
-      }
-    },
-    {
-      "source": "茂木敏充",
-      "target": "河野太郎",
-      "value": 1,
-      "lineStyle": {
-        "width": 1
-      }
-    },
-    {
-      "source": "河野太郎",
-      "target": "小泉進次郎",
-      "value": 1,
-      "lineStyle": {
-        "width": 1
-      }
-    },
-    {
-      "source": "小泉進次郎",
-      "target": "岸田文雄",
-      "value": 1,
-      "lineStyle": {
-        "width": 1
-      }
-    },
-    {
-      "source": "枝野幸男",
-      "target": "蓮舫",
-      "value": 2,
-      "lineStyle": {
-        "width": 2
-      }
-    },
-    {
-      "source": "枝野幸男",
-      "target": "辻元清美",
-      "value": 2,
-      "lineStyle": {
-        "width": 2
-      }
-    },
-    {
-      "source": "蓮舫",
-      "target": "辻元清美",
-      "value": 1,
-      "lineStyle": {
-        "width": 1
-      }
-    },
-    {
-      "source": "辻元清美",
-      "target": "枝野幸男",
-      "value": 1,
-      "lineStyle": {
-        "width": 1
-      }
-    },
-    {
-      "source": "山口那津男",
-      "target": "石井啓一",
-      "value": 2,
-      "lineStyle": {
-        "width": 2
-      }
-    },
-    {
-      "source": "石井啓一",
-      "target": "山口那津男",
-      "value": 1,
-      "lineStyle": {
-        "width": 1
-      }
-    },
-    {
-      "source": "馬場伸幸",
-      "target": "吉村洋文",
-      "value": 2,
-      "lineStyle": {
-        "width": 2
-      }
-    },
-    {
-      "source": "吉村洋文",
-      "target": "馬場伸幸",
-      "value": 1,
-      "lineStyle": {
-        "width": 1
-      }
-    },
-    {
-      "source": "玉木雄一郎",
-      "target": "前原誠司",
-      "value": 2,
-      "lineStyle": {
-        "width": 2
-      }
-    },
-    {
-      "source": "前原誠司",
-      "target": "玉木雄一郎",
-      "value": 1,
-      "lineStyle": {
-        "width": 1
-      }
-    },
-    {
-      "source": "岸田文雄",
-      "target": "山口那津男",
-      "value": 1,
-      "lineStyle": {
-        "width": 2,
-        "type": "dashed",
-        "color": "#ff9800"
-      }
-    },
-    {
-      "source": "茂木敏充",
-      "target": "山口那津男",
-      "value": 1,
-      "lineStyle": {
-        "width": 2,
-        "type": "dashed",
-        "color": "#ff9800"
-      }
-    },
-    {
-      "source": "河野太郎",
-      "target": "石井啓一",
-      "value": 1,
-      "lineStyle": {
-        "width": 2,
-        "type": "dashed",
-        "color": "#ff9800"
-      }
-    }
+    {"source": "ishiba_shigeru", "target": "kishida_fumio", "value": 3, "relation": "党内協力", "lineStyle": {"width": 3}},
+    {"source": "ishiba_shigeru", "target": "motegi_toshimitsu", "value": 3, "relation": "党執行部", "lineStyle": {"width": 3}},
+    {"source": "ishiba_shigeru", "target": "kono_taro", "value": 2, "relation": "改革派連携", "lineStyle": {"width": 2}},
+    {"source": "kishida_fumio", "target": "motegi_toshimitsu", "value": 2, "relation": "派閥間調整", "lineStyle": {"width": 2}},
+    {"source": "kishida_fumio", "target": "kono_taro", "value": 2, "relation": "閣僚経験", "lineStyle": {"width": 2}},
+    {"source": "motegi_toshimitsu", "target": "takaichi_sanae", "value": 1, "relation": "保守連携", "lineStyle": {"width": 1, "opacity": 0.5}},
+    {"source": "kono_taro", "target": "koizumi_shinjiro", "value": 3, "relation": "改革派仲間", "lineStyle": {"width": 3}},
+    {"source": "takaichi_sanae", "target": "motegi_toshimitsu", "value": 1, "relation": "党内", "lineStyle": {"width": 1}},
+    {"source": "noda_yoshihiko", "target": "edano_yukio", "value": 3, "relation": "党内協力", "lineStyle": {"width": 3}},
+    {"source": "noda_yoshihiko", "target": "izumi_kenta", "value": 2, "relation": "党執行部", "lineStyle": {"width": 2}},
+    {"source": "edano_yukio", "target": "tsujimoto_kiyomi", "value": 3, "relation": "リベラル連携", "lineStyle": {"width": 3}},
+    {"source": "izumi_kenta", "target": "edano_yukio", "value": 2, "relation": "党内", "lineStyle": {"width": 2}},
+    {"source": "yamaguchi_natsuo", "target": "ishii_keiichi", "value": 3, "relation": "党執行部", "lineStyle": {"width": 3}},
+    {"source": "shii_kazuo", "target": "tamura_tomoko", "value": 3, "relation": "党執行部", "lineStyle": {"width": 3}},
+    {"source": "baba_nobuyuki", "target": "yoshimura_hirofumi", "value": 3, "relation": "党共同代表", "lineStyle": {"width": 3}},
+    {"source": "baba_nobuyuki", "target": "maehara_seiji", "value": 2, "relation": "維新協力", "lineStyle": {"width": 2}},
+    {"source": "yoshimura_hirofumi", "target": "maehara_seiji", "value": 2, "relation": "改革派連携", "lineStyle": {"width": 2}},
+    {"source": "baba_nobuyuki", "target": "suzuki_muneo", "value": 1, "relation": "党内", "lineStyle": {"width": 1}},
+    {"source": "ishiba_shigeru", "target": "yamaguchi_natsuo", "value": 2, "relation": "連立与党", "lineStyle": {"width": 2, "type": "dashed", "color": "#ff9800"}},
+    {"source": "motegi_toshimitsu", "target": "yamaguchi_natsuo", "value": 2, "relation": "連立与党", "lineStyle": {"width": 2, "type": "dashed", "color": "#ff9800"}},
+    {"source": "kishida_fumio", "target": "ishii_keiichi", "value": 1, "relation": "連立与党", "lineStyle": {"width": 1, "type": "dashed", "color": "#ff9800"}},
+    {"source": "noda_yoshihiko", "target": "shii_kazuo", "value": 1, "relation": "野党共闘", "lineStyle": {"width": 1, "type": "dotted", "color": "#3498db"}},
+    {"source": "edano_yukio", "target": "fukushima_mizuho", "value": 2, "relation": "リベラル連携", "lineStyle": {"width": 2, "type": "dotted", "color": "#3498db"}},
+    {"source": "tsujimoto_kiyomi", "target": "fukushima_mizuho", "value": 2, "relation": "旧社民連携", "lineStyle": {"width": 2}},
+    {"source": "tamaki_yuichiro", "target": "ishiba_shigeru", "value": 1, "relation": "部分協力", "lineStyle": {"width": 1, "type": "dotted", "color": "#1abc9c"}},
+    {"source": "baba_nobuyuki", "target": "motegi_toshimitsu", "value": 1, "relation": "憲法改正連携", "lineStyle": {"width": 1, "type": "dotted", "color": "#9b59b6"}}
   ],
   "categories": [
+    {"name": "自由民主党"},
+    {"name": "立憲民主党"},
+    {"name": "公明党"},
+    {"name": "日本共産党"},
+    {"name": "日本維新の会"},
+    {"name": "国民民主党"},
+    {"name": "社会民主党"}
+  ],
+  "parties": {
+    "自由民主党": {
+      "shortName": "自民",
+      "color": "#e74c3c",
+      "ideology": "保守・中道右派",
+      "founded": 1955,
+      "seats": {"衆議院": 247, "参議院": 115},
+      "stance": {"conservative": 65, "liberal": 35},
+      "history": "1955年に自由党と日本民主党が合同して結党。以来、ほぼ一貫して政権を担う。2009年に一時野党となるも2012年に政権復帰。",
+      "policies": ["憲法改正", "経済成長", "日米同盟強化", "安全保障政策の強化"],
+      "supporters": ["経団連", "日本商工会議所", "農協", "医師会", "建設業界"]
+    },
+    "立憲民主党": {
+      "shortName": "立民",
+      "color": "#3498db",
+      "ideology": "リベラル・中道左派",
+      "founded": 2017,
+      "seats": {"衆議院": 98, "参議院": 39},
+      "stance": {"conservative": 30, "liberal": 70},
+      "history": "2017年に民進党から分裂して結党。枝野幸男が初代代表。2020年に旧国民民主党と合流して新「立憲民主党」に。",
+      "policies": ["憲法擁護", "格差是正", "原発ゼロ", "多様性尊重"],
+      "supporters": ["連合", "市民連合", "立憲フォーラム"]
+    },
+    "公明党": {
+      "shortName": "公明",
+      "color": "#f39c12",
+      "ideology": "中道",
+      "founded": 1964,
+      "seats": {"衆議院": 32, "参議院": 27},
+      "stance": {"conservative": 45, "liberal": 55},
+      "history": "1964年に結党。創価学会を支持母体とする。1999年以降、自民党と連立を組み与党として活動。",
+      "policies": ["平和主義", "福祉充実", "中小企業支援", "教育支援"],
+      "supporters": ["創価学会", "中小企業団体"]
+    },
+    "日本共産党": {
+      "shortName": "共産",
+      "color": "#c0392b",
+      "ideology": "左派・社会主義",
+      "founded": 1922,
+      "seats": {"衆議院": 10, "参議院": 11},
+      "stance": {"conservative": 5, "liberal": 95},
+      "history": "1922年に結党された日本最古の政党。マルクス・レーニン主義を掲げたが、現在は科学的社会主義を標榜。",
+      "policies": ["憲法9条堅持", "消費税廃止", "大企業課税", "原発即時ゼロ"],
+      "supporters": ["全労連", "民医連", "新日本婦人の会"]
+    },
+    "日本維新の会": {
+      "shortName": "維新",
+      "color": "#9b59b6",
+      "ideology": "保守・新自由主義",
+      "founded": 2015,
+      "seats": {"衆議院": 44, "参議院": 21},
+      "stance": {"conservative": 60, "liberal": 40},
+      "history": "2015年に「おおさか維新の会」として結党。橋下徹が創設した「日本維新の会」の流れを汲む。大阪を地盤に全国展開。",
+      "policies": ["憲法改正", "規制改革", "行政改革", "教育無償化"],
+      "supporters": ["関西経済界", "中小企業経営者"]
+    },
+    "国民民主党": {
+      "shortName": "国民",
+      "color": "#1abc9c",
+      "ideology": "中道",
+      "founded": 2020,
+      "seats": {"衆議院": 28, "参議院": 15},
+      "stance": {"conservative": 50, "liberal": 50},
+      "history": "2020年に旧国民民主党から分裂して結党。玉木雄一郎が代表を務める。「改革中道」を掲げる。",
+      "policies": ["手取り増加", "給料アップ", "原発活用", "現実的安保"],
+      "supporters": ["電力総連", "自動車総連", "UAゼンセン"]
+    },
+    "社会民主党": {
+      "shortName": "社民",
+      "color": "#e91e63",
+      "ideology": "社会民主主義",
+      "founded": 1996,
+      "seats": {"衆議院": 1, "参議院": 1},
+      "stance": {"conservative": 10, "liberal": 90},
+      "history": "1996年に日本社会党から改称。かつては野党第一党だったが、現在は少数政党。2020年に多くの議員が立憲に移籍。",
+      "policies": ["憲法9条堅持", "脱原発", "平和外交", "人権擁護"],
+      "supporters": ["社民系労組", "平和フォーラム"]
+    }
+  },
+  "organizations": [
     {
-      "name": "自由民主党"
+      "id": "keidanren",
+      "name": "経団連",
+      "fullName": "日本経済団体連合会",
+      "type": "経済団体",
+      "stance": {"conservative": 60, "liberal": 40},
+      "supportedParties": ["自由民主党"],
+      "interests": ["法人税減税", "規制緩和", "原発推進", "労働法制改革"]
     },
     {
-      "name": "立憲民主党"
+      "id": "rengo",
+      "name": "連合",
+      "fullName": "日本労働組合総連合会",
+      "type": "労働組合",
+      "stance": {"conservative": 35, "liberal": 65},
+      "supportedParties": ["立憲民主党", "国民民主党"],
+      "interests": ["労働者の権利", "最低賃金引上げ", "働き方改革"]
     },
     {
-      "name": "公明党"
+      "id": "nippon_kaigi",
+      "name": "日本会議",
+      "fullName": "日本会議",
+      "type": "思想団体",
+      "stance": {"conservative": 95, "liberal": 5},
+      "supportedParties": ["自由民主党"],
+      "interests": ["憲法改正", "伝統的家族観", "歴史認識"]
     },
     {
-      "name": "日本共産党"
+      "id": "soka_gakkai",
+      "name": "創価学会",
+      "fullName": "創価学会",
+      "type": "宗教団体",
+      "stance": {"conservative": 45, "liberal": 55},
+      "supportedParties": ["公明党"],
+      "interests": ["平和主義", "福祉", "教育"]
     },
     {
-      "name": "日本維新の会"
+      "id": "zenroren",
+      "name": "全労連",
+      "fullName": "全国労働組合総連合",
+      "type": "労働組合",
+      "stance": {"conservative": 5, "liberal": 95},
+      "supportedParties": ["日本共産党"],
+      "interests": ["労働者の権利", "最低賃金1500円", "非正規雇用撤廃"]
     },
     {
-      "name": "国民民主党"
+      "id": "nokyo",
+      "name": "農協",
+      "fullName": "全国農業協同組合連合会",
+      "type": "業界団体",
+      "stance": {"conservative": 55, "liberal": 45},
+      "supportedParties": ["自由民主党"],
+      "interests": ["農業保護", "食料自給率向上", "地方創生"]
+    },
+    {
+      "id": "ishikai",
+      "name": "医師会",
+      "fullName": "日本医師会",
+      "type": "業界団体",
+      "stance": {"conservative": 55, "liberal": 45},
+      "supportedParties": ["自由民主党"],
+      "interests": ["診療報酬引上げ", "医療制度維持", "医師の働き方"]
+    },
+    {
+      "id": "kansai_keizai",
+      "name": "関西経済連合会",
+      "fullName": "関西経済連合会",
+      "type": "経済団体",
+      "stance": {"conservative": 55, "liberal": 45},
+      "supportedParties": ["日本維新の会", "自由民主党"],
+      "interests": ["規制緩和", "大阪万博", "IR推進"]
+    }
+  ],
+  "policyTopics": [
+    {
+      "id": "constitution",
+      "name": "憲法改正",
+      "description": "日本国憲法、特に第9条の改正について",
+      "spectrum": {
+        "left": "護憲（改正反対）",
+        "right": "改憲（改正賛成）"
+      }
+    },
+    {
+      "id": "security",
+      "name": "安全保障",
+      "description": "防衛政策、日米同盟、自衛隊の位置づけ",
+      "spectrum": {
+        "left": "平和主義・非武装中立",
+        "right": "防衛力強化・日米同盟強化"
+      }
+    },
+    {
+      "id": "economy",
+      "name": "経済政策",
+      "description": "経済成長vs再分配、規制緩和vs規制強化",
+      "spectrum": {
+        "left": "再分配重視・福祉国家",
+        "right": "成長重視・新自由主義"
+      }
+    },
+    {
+      "id": "energy",
+      "name": "エネルギー政策",
+      "description": "原子力発電の是非、再生可能エネルギー",
+      "spectrum": {
+        "left": "脱原発・再エネ推進",
+        "right": "原発推進・ベースロード電源"
+      }
+    },
+    {
+      "id": "social",
+      "name": "社会保障",
+      "description": "年金、医療、介護、子育て支援",
+      "spectrum": {
+        "left": "社会保障拡充・増税",
+        "right": "効率化・自助努力"
+      }
     }
   ],
   "stats": {
-    "total_members": 14,
-    "total_parties": 6,
-    "last_updated": "2026-02-01 12:00:00",
+    "total_members": 20,
+    "total_parties": 7,
+    "last_updated": "2026-02-03 12:00:00",
     "party_sizes": {
-      "自由民主党": 4,
-      "立憲民主党": 3,
+      "自由民主党": 6,
+      "立憲民主党": 4,
       "公明党": 2,
-      "日本共産党": 1,
-      "日本維新の会": 2,
-      "国民民主党": 2
+      "日本共産党": 2,
+      "日本維新の会": 4,
+      "国民民主党": 1,
+      "社会民主党": 1
+    },
+    "diet_composition": {
+      "衆議院": {
+        "total": 465,
+        "与党": 279,
+        "野党": 186
+      },
+      "参議院": {
+        "total": 248,
+        "与党": 142,
+        "野党": 106
+      }
     }
   }
 }

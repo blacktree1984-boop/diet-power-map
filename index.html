@@ -3,168 +3,305 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>国会パワーバランス可視化システム</title>
+    <title>国会議員パワーマップ - 日本の政治を可視化</title>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <style>
+        :root {
+            --primary: #4facfe;
+            --primary-dark: #00f2fe;
+            --bg-dark: #0f0f1a;
+            --bg-card: rgba(20, 20, 40, 0.9);
+            --bg-card-hover: rgba(30, 30, 60, 0.95);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --border: rgba(255, 255, 255, 0.1);
+            --ldp: #e74c3c;
+            --cdp: #3498db;
+            --komeito: #f39c12;
+            --jcp: #c0392b;
+            --ishin: #9b59b6;
+            --dpfp: #1abc9c;
+            --sdp: #e91e63;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', 'メイリオ', sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #fff;
-            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Hiragino Kaku Gothic ProN', sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 50%, #16213e 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-        
+
+        /* Header */
         .header {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            padding: 20px 40px;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            z-index: 100;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            height: 70px;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 30px;
         }
-        
-        .header h1 {
-            font-size: 24px;
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo h1 {
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 5px;
-            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
-        .header .subtitle {
-            font-size: 12px;
-            color: #888;
+
+        .logo .subtitle {
+            font-size: 11px;
+            color: var(--text-secondary);
         }
-        
-        .stats-panel {
-            position: absolute;
-            top: 100px;
-            left: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            min-width: 250px;
-            z-index: 100;
-        }
-        
-        .stats-panel h3 {
-            font-size: 14px;
-            margin-bottom: 15px;
-            color: #4facfe;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 5px;
-        }
-        
-        .stat-item {
+
+        /* Navigation */
+        .nav {
             display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            gap: 5px;
+            margin-left: 50px;
         }
-        
-        .stat-label {
-            color: #aaa;
-        }
-        
-        .stat-value {
-            color: #fff;
-            font-weight: 600;
-        }
-        
-        .party-list {
-            margin-top: 15px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        
-        .party-item {
-            padding: 8px;
-            margin: 5px 0;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 5px;
-            border-left: 3px solid;
-            font-size: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.3s;
+
+        .nav-item {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 13px;
             cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        
-        .party-item:hover {
+
+        .nav-item:hover {
+            background: rgba(79, 172, 254, 0.1);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: rgba(79, 172, 254, 0.2);
+            color: var(--primary);
+        }
+
+        /* Search */
+        .search-container {
+            margin-left: auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 280px;
+            padding: 10px 15px 10px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
             background: rgba(255, 255, 255, 0.1);
         }
-        
-        .party-name {
-            flex: 1;
-        }
-        
-        .party-count {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-        
-        .info-panel {
+
+        .search-icon {
             position: absolute;
-            top: 100px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(10px);
-            padding: 20px;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
             border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            min-width: 250px;
-            max-width: 300px;
-            z-index: 100;
+            margin-top: 5px;
+            max-height: 400px;
+            overflow-y: auto;
             display: none;
         }
-        
-        .info-panel.active {
+
+        .search-results.active {
             display: block;
         }
-        
-        .info-panel h3 {
-            font-size: 16px;
-            margin-bottom: 10px;
-            color: #4facfe;
+
+        .search-result-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        
-        .info-detail {
-            margin: 10px 0;
-            font-size: 13px;
+
+        .search-result-item:hover {
+            background: var(--bg-card-hover);
         }
-        
-        .info-label {
-            color: #888;
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 70px;
+            display: flex;
+            height: calc(100vh - 70px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar-section {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
             font-size: 11px;
-            margin-bottom: 3px;
+            color: var(--text-secondary);
+            margin-top: 5px;
         }
-        
-        .info-value {
-            color: #fff;
-            font-weight: 500;
+
+        /* Party List */
+        .party-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
-        
-        #main {
-            width: 100vw;
-            height: 100vh;
+
+        .party-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.3s;
         }
-        
-        .controls {
+
+        .party-item:hover {
+            background: var(--bg-card-hover);
+            transform: translateX(5px);
+        }
+
+        .party-color {
+            width: 4px;
+            height: 30px;
+            border-radius: 2px;
+            margin-right: 12px;
+        }
+
+        .party-info {
+            flex: 1;
+        }
+
+        .party-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .party-seats {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .party-count {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Chart Container */
+        .chart-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #mainChart {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* View Controls */
+        .view-controls {
             position: absolute;
             bottom: 20px;
             left: 50%;
@@ -173,338 +310,1308 @@
             gap: 10px;
             z-index: 100;
         }
-        
-        .control-btn {
+
+        .view-btn {
             padding: 10px 20px;
-            background: rgba(79, 172, 254, 0.2);
-            border: 1px solid #4facfe;
-            color: #4facfe;
-            border-radius: 5px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            border-radius: 8px;
             cursor: pointer;
             font-size: 12px;
             transition: all 0.3s;
             backdrop-filter: blur(10px);
         }
-        
-        .control-btn:hover {
-            background: rgba(79, 172, 254, 0.4);
-            transform: translateY(-2px);
+
+        .view-btn:hover {
+            background: rgba(79, 172, 254, 0.2);
+            border-color: var(--primary);
         }
-        
-        .loading {
+
+        /* Detail Panel */
+        .detail-panel {
+            position: fixed;
+            top: 70px;
+            right: -450px;
+            width: 450px;
+            height: calc(100vh - 70px);
+            background: var(--bg-card);
+            border-left: 1px solid var(--border);
+            z-index: 500;
+            transition: right 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .detail-panel.active {
+            right: 0;
+        }
+
+        .detail-header {
+            padding: 25px;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .detail-close {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 1000;
+            top: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top: 3px solid #4facfe;
+
+        .detail-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+        }
+
+        .detail-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .detail-reading {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .detail-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .detail-tag {
+            padding: 5px 12px;
+            background: rgba(79, 172, 254, 0.2);
+            border-radius: 15px;
+            font-size: 11px;
+            color: var(--primary);
+        }
+
+        .detail-section {
+            padding: 20px 25px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Spectrum Bar */
+        .spectrum-container {
+            margin: 15px 0;
+        }
+
+        .spectrum-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+
+        .spectrum-bar {
+            height: 8px;
+            background: linear-gradient(90deg, #3498db 0%, #95a5a6 50%, #e74c3c 100%);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .spectrum-indicator {
+            position: absolute;
+            top: -3px;
+            width: 14px;
+            height: 14px;
+            background: var(--text-primary);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            border: 2px solid var(--bg-dark);
+            transform: translateX(-50%);
+        }
+
+        /* Policy Grid */
+        .policy-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .policy-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+
+        .policy-name {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .policy-stance {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Supporters */
+        .supporter-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .supporter-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+
+        .supporter-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(79, 172, 254, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .supporter-name {
+            font-size: 13px;
+        }
+
+        .supporter-type {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        /* Loading */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(79, 172, 254, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
+            margin: 0 auto 20px;
         }
-        
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
-        
-        /* スクロールバーのスタイル */
-        ::-webkit-scrollbar {
-            width: 6px;
+
+        .loading-text {
+            color: var(--text-secondary);
+            font-size: 14px;
         }
-        
-        ::-webkit-scrollbar-track {
+
+        /* Influence Meter */
+        .influence-meter {
+            margin-top: 15px;
+        }
+
+        .influence-bar-container {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .influence-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .influence-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        /* Tooltip */
+        .custom-tooltip {
+            background: var(--bg-card) !important;
+            border: 1px solid var(--border) !important;
+            border-radius: 10px !important;
+            padding: 15px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+        }
+
+        /* Party Analysis View */
+        .party-analysis {
+            display: none;
+            padding: 30px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .party-analysis.active {
+            display: block;
+        }
+
+        .party-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .party-card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .party-card-color {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+        }
+
+        .party-card-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .party-card-ideology {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .party-stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .party-stat {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+
+        .party-stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .party-stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .party-history {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Spectrum View */
+        .spectrum-view {
+            display: none;
+            padding: 30px;
+            height: 100%;
+        }
+
+        .spectrum-view.active {
+            display: block;
+        }
+
+        #spectrumChart {
+            width: 100%;
+            height: calc(100% - 60px);
+        }
+
+        /* Organization View */
+        .org-view {
+            display: none;
+            padding: 30px;
+            overflow-y: auto;
+            height: 100%;
+        }
+
+        .org-view.active {
+            display: block;
+        }
+
+        .org-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .org-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .org-name {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .org-type {
+            padding: 4px 10px;
+            background: rgba(79, 172, 254, 0.2);
+            border-radius: 10px;
+            font-size: 11px;
+            color: var(--primary);
+        }
+
+        .org-full-name {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 3px;
+        }
+
+        .org-interests {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .org-interest {
+            padding: 5px 10px;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
+            border-radius: 5px;
+            font-size: 11px;
+            color: var(--text-secondary);
         }
-        
+
+        .org-supported {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .org-supported-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .org-parties {
+            display: flex;
+            gap: 8px;
+        }
+
+        .org-party-tag {
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 11px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
         ::-webkit-scrollbar-thumb {
-            background: rgba(79, 172, 254, 0.5);
-            border-radius: 3px;
+            background: rgba(79, 172, 254, 0.3);
+            border-radius: 4px;
         }
-        
+
         ::-webkit-scrollbar-thumb:hover {
-            background: rgba(79, 172, 254, 0.7);
+            background: rgba(79, 172, 254, 0.5);
+        }
+
+        /* View title */
+        .view-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Filter buttons */
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .filter-btn {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(79, 172, 254, 0.2);
+            border-color: var(--primary);
+            color: var(--primary);
         }
     </style>
 </head>
 <body>
     <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <div>データを読み込んでいます...</div>
-    </div>
-    
-    <div class="header">
-        <h1>🏛️ 国会パワーバランス可視化システム</h1>
-        <div class="subtitle">衆議院議員の勢力関係をインタラクティブに表示</div>
-    </div>
-    
-    <div class="stats-panel">
-        <h3>📊 統計情報</h3>
-        <div class="stat-item">
-            <span class="stat-label">総議員数</span>
-            <span class="stat-value" id="totalMembers">-</span>
-        </div>
-        <div class="stat-item">
-            <span class="stat-label">政党数</span>
-            <span class="stat-value" id="totalParties">-</span>
-        </div>
-        <div class="stat-item">
-            <span class="stat-label">最終更新</span>
-            <span class="stat-value" id="lastUpdated">-</span>
-        </div>
-        
-        <h3 style="margin-top: 20px;">🎯 政党別議席数</h3>
-        <div class="party-list" id="partyList"></div>
-    </div>
-    
-    <div class="info-panel" id="infoPanel">
-        <h3 id="memberName">-</h3>
-        <div class="info-detail">
-            <div class="info-label">所属政党</div>
-            <div class="info-value" id="memberParty">-</div>
-        </div>
-        <div class="info-detail">
-            <div class="info-label">当選回数</div>
-            <div class="info-value" id="memberWins">-</div>
-        </div>
-        <div class="info-detail">
-            <div class="info-label">影響力スコア</div>
-            <div class="info-value" id="memberInfluence">-</div>
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <div class="loading-text">データを読み込んでいます...</div>
         </div>
     </div>
-    
-    <div id="main"></div>
-    
-    <div class="controls">
-        <button class="control-btn" onclick="resetView()">🔄 ビューをリセット</button>
-        <button class="control-btn" onclick="toggleLabels()">🏷️ ラベル表示切替</button>
+
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">🏛</div>
+            <div>
+                <h1>国会議員パワーマップ</h1>
+                <div class="subtitle">日本の政治を可視化する</div>
+            </div>
+        </div>
+
+        <nav class="nav">
+            <button class="nav-item active" data-view="network">
+                <span>🔗</span>
+                <span>人脈ネットワーク</span>
+            </button>
+            <button class="nav-item" data-view="spectrum">
+                <span>📊</span>
+                <span>政治スペクトラム</span>
+            </button>
+            <button class="nav-item" data-view="party">
+                <span>🏛</span>
+                <span>政党分析</span>
+            </button>
+            <button class="nav-item" data-view="org">
+                <span>🏢</span>
+                <span>支援組織</span>
+            </button>
+        </nav>
+
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="議員名・政党名で検索..." id="searchInput">
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <div class="sidebar-title">国会の構成</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalSeats">713</div>
+                        <div class="stat-label">総議席数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalParties">7</div>
+                        <div class="stat-label">政党数</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="rulingSeats">421</div>
+                        <div class="stat-label">与党議席</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="oppositionSeats">292</div>
+                        <div class="stat-label">野党議席</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">政党一覧</div>
+                <div class="party-list" id="partyList"></div>
+            </div>
+
+            <div class="sidebar-section">
+                <div class="sidebar-title">最終更新</div>
+                <div style="font-size: 12px; color: var(--text-secondary);" id="lastUpdated">-</div>
+            </div>
+        </aside>
+
+        <div class="chart-container">
+            <!-- Network View -->
+            <div id="mainChart"></div>
+
+            <!-- Spectrum View -->
+            <div class="spectrum-view" id="spectrumView">
+                <div class="view-title">政治スペクトラム - 保守 vs リベラル</div>
+                <div id="spectrumChart"></div>
+            </div>
+
+            <!-- Party Analysis View -->
+            <div class="party-analysis" id="partyView">
+                <div class="view-title">政党詳細分析</div>
+                <div id="partyCards"></div>
+            </div>
+
+            <!-- Organization View -->
+            <div class="org-view" id="orgView">
+                <div class="view-title">支援組織・団体</div>
+                <div class="filter-buttons" id="orgFilters">
+                    <button class="filter-btn active" data-filter="all">すべて</button>
+                    <button class="filter-btn" data-filter="経済団体">経済団体</button>
+                    <button class="filter-btn" data-filter="労働組合">労働組合</button>
+                    <button class="filter-btn" data-filter="業界団体">業界団体</button>
+                    <button class="filter-btn" data-filter="思想団体">思想団体</button>
+                    <button class="filter-btn" data-filter="宗教団体">宗教団体</button>
+                </div>
+                <div id="orgCards"></div>
+            </div>
+
+            <div class="view-controls" id="viewControls">
+                <button class="view-btn" onclick="resetView()">🔄 リセット</button>
+                <button class="view-btn" onclick="toggleLabels()">🏷 ラベル切替</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Detail Panel -->
+    <div class="detail-panel" id="detailPanel">
+        <div class="detail-header">
+            <button class="detail-close" onclick="closeDetail()">×</button>
+            <div class="detail-name" id="detailName">-</div>
+            <div class="detail-reading" id="detailReading">-</div>
+            <div class="detail-tags" id="detailTags"></div>
+        </div>
+
+        <div class="detail-section">
+            <div class="detail-section-title">影響力スコア</div>
+            <div class="influence-meter">
+                <div class="influence-value" id="detailInfluence">-</div>
+                <div class="influence-bar-container">
+                    <div class="influence-bar" id="detailInfluenceBar" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <div class="detail-section-title">政治的スタンス</div>
+            <div class="spectrum-container">
+                <div class="spectrum-labels">
+                    <span>リベラル</span>
+                    <span>中道</span>
+                    <span>保守</span>
+                </div>
+                <div class="spectrum-bar">
+                    <div class="spectrum-indicator" id="detailSpectrum" style="left: 50%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <div class="detail-section-title">基本情報</div>
+            <div class="policy-grid" id="detailBasicInfo"></div>
+        </div>
+
+        <div class="detail-section">
+            <div class="detail-section-title">主要政策スタンス</div>
+            <div class="policy-grid" id="detailPolicies"></div>
+        </div>
+
+        <div class="detail-section">
+            <div class="detail-section-title">支援団体・関係組織</div>
+            <div class="supporter-list" id="detailSupporters"></div>
+        </div>
     </div>
-    
+
     <script>
-        let chart;
-        let currentData;
+        let currentData = null;
+        let networkChart = null;
+        let spectrumChart = null;
+        let currentView = 'network';
         let showAllLabels = false;
-        
-        // 政党カラーマッピング
+
         const partyColors = {
             '自由民主党': '#e74c3c',
             '立憲民主党': '#3498db',
             '公明党': '#f39c12',
-            '日本共産党': '#e74c3c',
+            '日本共産党': '#c0392b',
             '日本維新の会': '#9b59b6',
             '国民民主党': '#1abc9c',
+            '社会民主党': '#e91e63',
             '無所属': '#95a5a6'
         };
-        
+
         function getPartyColor(partyName) {
             for (let key in partyColors) {
-                if (partyName.includes(key)) {
+                if (partyName && partyName.includes(key)) {
                     return partyColors[key];
                 }
             }
             return '#7f8c8d';
         }
-        
+
         async function loadData() {
             try {
                 const response = await fetch('data.json');
-                const data = await response.json();
-                currentData = data;
-                
-                // 統計情報の表示
-                if (data.stats) {
-                    document.getElementById('totalMembers').textContent = data.stats.total_members + '名';
-                    document.getElementById('totalParties').textContent = data.stats.total_parties;
-                    document.getElementById('lastUpdated').textContent = data.stats.last_updated || '-';
-                    
-                    // 政党リストの表示
-                    const partyList = document.getElementById('partyList');
-                    const sortedParties = Object.entries(data.stats.party_sizes || {})
-                        .sort((a, b) => b[1] - a[1]);
-                    
-                    partyList.innerHTML = sortedParties.map(([party, count]) => `
-                        <div class="party-item" style="border-left-color: ${getPartyColor(party)}" 
-                             onclick="highlightParty('${party}')">
-                            <span class="party-name">${party}</span>
-                            <span class="party-count">${count}</span>
-                        </div>
-                    `).join('');
-                }
-                
-                initChart(data);
+                currentData = await response.json();
+                initializeApp();
                 document.getElementById('loading').style.display = 'none';
-                
             } catch (error) {
-                console.error('データ読み込みエラー:', error);
-                document.getElementById('loading').innerHTML = 
-                    '<div style="color: #e74c3c;">❌ データの読み込みに失敗しました</div>';
+                console.error('Data loading error:', error);
+                document.getElementById('loading').innerHTML = `
+                    <div class="loading-content">
+                        <div style="color: #e74c3c; font-size: 48px; margin-bottom: 20px;">⚠</div>
+                        <div class="loading-text">データの読み込みに失敗しました</div>
+                    </div>
+                `;
             }
         }
-        
-        function initChart(data) {
-            chart = echarts.init(document.getElementById('main'), 'dark');
-            
-            // カテゴリに色を割り当て
-            const categories = data.categories.map(cat => ({
+
+        function initializeApp() {
+            updateStats();
+            renderPartyList();
+            initNetworkChart();
+            setupEventListeners();
+            renderPartyAnalysis();
+            renderOrganizations();
+        }
+
+        function updateStats() {
+            const stats = currentData.stats;
+            const composition = stats.diet_composition;
+
+            document.getElementById('totalSeats').textContent =
+                (composition.衆議院.total + composition.参議院.total).toLocaleString();
+            document.getElementById('totalParties').textContent = stats.total_parties;
+            document.getElementById('rulingSeats').textContent =
+                (composition.衆議院.与党 + composition.参議院.与党).toLocaleString();
+            document.getElementById('oppositionSeats').textContent =
+                (composition.衆議院.野党 + composition.参議院.野党).toLocaleString();
+            document.getElementById('lastUpdated').textContent = stats.last_updated;
+        }
+
+        function renderPartyList() {
+            const parties = currentData.parties;
+            const container = document.getElementById('partyList');
+
+            const sortedParties = Object.entries(parties).sort((a, b) => {
+                const seatsA = a[1].seats.衆議院 + a[1].seats.参議院;
+                const seatsB = b[1].seats.衆議院 + b[1].seats.参議院;
+                return seatsB - seatsA;
+            });
+
+            container.innerHTML = sortedParties.map(([name, party]) => {
+                const totalSeats = party.seats.衆議院 + party.seats.参議院;
+                return `
+                    <div class="party-item" onclick="highlightParty('${name}')">
+                        <div class="party-color" style="background: ${party.color}"></div>
+                        <div class="party-info">
+                            <div class="party-name">${name}</div>
+                            <div class="party-seats">衆${party.seats.衆議院} / 参${party.seats.参議院}</div>
+                        </div>
+                        <div class="party-count">${totalSeats}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function initNetworkChart() {
+            networkChart = echarts.init(document.getElementById('mainChart'));
+
+            const categories = currentData.categories.map(cat => ({
                 name: cat.name,
-                itemStyle: {
-                    color: getPartyColor(cat.name)
-                }
+                itemStyle: { color: getPartyColor(cat.name) }
             }));
-            
+
             const option = {
                 backgroundColor: 'transparent',
-                title: {
-                    show: false
-                },
                 tooltip: {
                     trigger: 'item',
+                    backgroundColor: 'rgba(20, 20, 40, 0.95)',
+                    borderColor: 'rgba(79, 172, 254, 0.5)',
+                    borderWidth: 1,
+                    padding: 15,
+                    textStyle: { color: '#fff' },
                     formatter: function(params) {
                         if (params.dataType === 'node') {
+                            const node = params.data;
                             return `
-                                <strong>${params.data.name}</strong><br/>
-                                所属: ${params.data.category}<br/>
-                                当選回数: ${params.data.value}回
+                                <div style="font-size: 16px; font-weight: 600; margin-bottom: 8px;">${node.name}</div>
+                                <div style="color: #a0a0b0; margin-bottom: 5px;">${node.position || ''}</div>
+                                <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                                    <span style="color: #a0a0b0;">所属:</span>
+                                    <span style="color: ${getPartyColor(node.category)}">${node.category}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #a0a0b0;">当選回数:</span>
+                                    <span>${node.value}回</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: #a0a0b0;">影響力:</span>
+                                    <span style="color: #4facfe;">${node.influence || '-'}</span>
+                                </div>
                             `;
                         } else {
-                            return `${params.data.source} ⟷ ${params.data.target}`;
+                            return `<div>${params.data.source} ⟷ ${params.data.target}</div>
+                                    <div style="color: #a0a0b0; margin-top: 5px;">${params.data.relation || ''}</div>`;
                         }
-                    },
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    borderColor: '#4facfe',
-                    borderWidth: 1,
-                    textStyle: {
-                        color: '#fff'
                     }
                 },
-                legend: [{
-                    orient: 'vertical',
-                    top: 'bottom',
+                legend: {
+                    orient: 'horizontal',
+                    bottom: 60,
                     left: 'center',
                     data: categories.map(c => c.name),
-                    textStyle: {
-                        color: '#fff',
-                        fontSize: 11
-                    },
+                    textStyle: { color: '#fff', fontSize: 11 },
+                    itemGap: 20,
                     backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                    borderRadius: 5,
-                    padding: 10
-                }],
+                    borderRadius: 10,
+                    padding: 15
+                },
                 series: [{
                     type: 'graph',
                     layout: 'force',
-                    data: data.nodes,
-                    links: data.links,
+                    data: currentData.nodes.map(node => ({
+                        ...node,
+                        itemStyle: { color: getPartyColor(node.category) }
+                    })),
+                    links: currentData.links,
                     categories: categories,
                     roam: true,
+                    draggable: true,
                     label: {
                         show: true,
                         position: 'right',
                         formatter: '{b}',
-                        fontSize: 10
+                        fontSize: 11,
+                        color: '#fff'
                     },
-                    labelLayout: {
-                        hideOverlap: true
-                    },
+                    labelLayout: { hideOverlap: true },
                     emphasis: {
                         focus: 'adjacency',
-                        label: {
-                            show: true,
-                            fontSize: 14,
-                            fontWeight: 'bold'
-                        },
-                        lineStyle: {
-                            width: 3
-                        }
+                        label: { show: true, fontSize: 14, fontWeight: 'bold' },
+                        lineStyle: { width: 4 }
                     },
                     force: {
-                        repulsion: 150,
+                        repulsion: 300,
                         gravity: 0.1,
-                        edgeLength: [50, 100],
+                        edgeLength: [80, 150],
                         layoutAnimation: true
                     },
                     lineStyle: {
                         color: 'source',
-                        curveness: 0.1,
-                        opacity: 0.5
+                        curveness: 0.2,
+                        opacity: 0.6
                     }
                 }],
                 animationDuration: 1500,
                 animationEasingUpdate: 'quinticInOut'
             };
-            
-            chart.setOption(option);
-            
-            // クリックイベント
-            chart.on('click', function(params) {
+
+            networkChart.setOption(option);
+
+            networkChart.on('click', function(params) {
                 if (params.dataType === 'node') {
-                    showMemberInfo(params.data);
+                    showMemberDetail(params.data);
                 }
             });
-            
-            // リサイズ対応
-            window.addEventListener('resize', () => chart.resize());
+
+            window.addEventListener('resize', () => {
+                if (networkChart) networkChart.resize();
+                if (spectrumChart) spectrumChart.resize();
+            });
         }
-        
-        function showMemberInfo(member) {
-            const panel = document.getElementById('infoPanel');
-            document.getElementById('memberName').textContent = member.name;
-            document.getElementById('memberParty').textContent = member.category;
-            document.getElementById('memberWins').textContent = member.value + '回';
-            
-            // 影響力スコア（簡易計算：当選回数 × ノードサイズ）
-            const influence = Math.round(member.value * member.symbolSize / 10);
-            document.getElementById('memberInfluence').textContent = influence;
-            
+
+        function initSpectrumChart() {
+            if (spectrumChart) return;
+
+            spectrumChart = echarts.init(document.getElementById('spectrumChart'));
+
+            const scatterData = currentData.nodes.map(node => {
+                const stance = node.politicalStance || { conservative: 50, liberal: 50 };
+                return {
+                    name: node.name,
+                    value: [stance.conservative, node.influence || 50],
+                    symbolSize: Math.max(20, (node.influence || 50) / 3),
+                    itemStyle: { color: getPartyColor(node.category) },
+                    label: {
+                        show: node.influence > 70,
+                        position: 'right',
+                        formatter: '{b}',
+                        fontSize: 10
+                    },
+                    originalData: node
+                };
+            });
+
+            const option = {
+                backgroundColor: 'transparent',
+                tooltip: {
+                    trigger: 'item',
+                    backgroundColor: 'rgba(20, 20, 40, 0.95)',
+                    borderColor: 'rgba(79, 172, 254, 0.5)',
+                    borderWidth: 1,
+                    padding: 15,
+                    textStyle: { color: '#fff' },
+                    formatter: function(params) {
+                        const node = params.data.originalData;
+                        return `
+                            <div style="font-size: 14px; font-weight: 600;">${node.name}</div>
+                            <div style="color: ${getPartyColor(node.category)}; margin: 5px 0;">${node.category}</div>
+                            <div style="color: #a0a0b0;">保守度: ${params.value[0]}%</div>
+                            <div style="color: #a0a0b0;">影響力: ${params.value[1]}</div>
+                        `;
+                    }
+                },
+                grid: {
+                    left: 80,
+                    right: 50,
+                    top: 50,
+                    bottom: 80
+                },
+                xAxis: {
+                    name: '保守 →',
+                    nameLocation: 'middle',
+                    nameGap: 35,
+                    nameTextStyle: { color: '#a0a0b0', fontSize: 12 },
+                    min: 0,
+                    max: 100,
+                    axisLine: { lineStyle: { color: 'rgba(255,255,255,0.2)' } },
+                    axisTick: { show: false },
+                    axisLabel: { color: '#a0a0b0' },
+                    splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } }
+                },
+                yAxis: {
+                    name: '影響力 →',
+                    nameLocation: 'middle',
+                    nameGap: 50,
+                    nameTextStyle: { color: '#a0a0b0', fontSize: 12 },
+                    min: 0,
+                    max: 100,
+                    axisLine: { lineStyle: { color: 'rgba(255,255,255,0.2)' } },
+                    axisTick: { show: false },
+                    axisLabel: { color: '#a0a0b0' },
+                    splitLine: { lineStyle: { color: 'rgba(255,255,255,0.05)' } }
+                },
+                series: [{
+                    type: 'scatter',
+                    data: scatterData,
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 20,
+                            shadowColor: 'rgba(79, 172, 254, 0.5)'
+                        }
+                    }
+                }],
+                graphic: [
+                    {
+                        type: 'text',
+                        left: 80,
+                        bottom: 80,
+                        style: { text: '← リベラル', fill: '#a0a0b0', fontSize: 11 }
+                    },
+                    {
+                        type: 'rect',
+                        left: '50%',
+                        top: 50,
+                        shape: { width: 1, height: 'calc(100% - 130px)' },
+                        style: { fill: 'rgba(255,255,255,0.1)' }
+                    }
+                ]
+            };
+
+            spectrumChart.setOption(option);
+
+            spectrumChart.on('click', function(params) {
+                if (params.data && params.data.originalData) {
+                    showMemberDetail(params.data.originalData);
+                }
+            });
+        }
+
+        function showMemberDetail(member) {
+            const panel = document.getElementById('detailPanel');
+
+            document.getElementById('detailName').textContent = member.name;
+            document.getElementById('detailReading').textContent = member.nameReading || '';
+
+            // Tags
+            const tags = [];
+            if (member.category) tags.push(member.category);
+            if (member.position) tags.push(member.position);
+            if (member.faction) tags.push(member.faction);
+            document.getElementById('detailTags').innerHTML = tags.map(tag =>
+                `<span class="detail-tag">${tag}</span>`
+            ).join('');
+
+            // Influence
+            const influence = member.influence || 50;
+            document.getElementById('detailInfluence').textContent = influence;
+            document.getElementById('detailInfluenceBar').style.width = influence + '%';
+
+            // Spectrum
+            const stance = member.politicalStance || { conservative: 50 };
+            document.getElementById('detailSpectrum').style.left = stance.conservative + '%';
+
+            // Basic Info
+            const basicInfo = [
+                { label: '選挙区', value: member.district || '-' },
+                { label: '当選回数', value: (member.value || 0) + '回' },
+                { label: '生年', value: member.birthYear ? member.birthYear + '年' : '-' },
+                { label: '所属派閥', value: member.faction || '-' }
+            ];
+            document.getElementById('detailBasicInfo').innerHTML = basicInfo.map(item => `
+                <div class="policy-item">
+                    <span class="policy-name">${item.label}</span>
+                    <span class="policy-stance">${item.value}</span>
+                </div>
+            `).join('');
+
+            // Policies
+            const policies = member.policies || {};
+            document.getElementById('detailPolicies').innerHTML = Object.entries(policies).map(([key, value]) => `
+                <div class="policy-item">
+                    <span class="policy-name">${key}</span>
+                    <span class="policy-stance">${value}</span>
+                </div>
+            `).join('');
+
+            // Supporters
+            const supporters = member.supporters || [];
+            document.getElementById('detailSupporters').innerHTML = supporters.length > 0
+                ? supporters.map(s => `
+                    <div class="supporter-item">
+                        <div class="supporter-icon">${getOrgIcon(s.type)}</div>
+                        <div>
+                            <div class="supporter-name">${s.name}</div>
+                            <div class="supporter-type">${s.type}</div>
+                        </div>
+                    </div>
+                `).join('')
+                : '<div style="color: var(--text-secondary); font-size: 12px;">情報なし</div>';
+
             panel.classList.add('active');
         }
-        
-        function resetView() {
-            if (chart) {
-                chart.dispatchAction({
-                    type: 'restore'
-                });
-            }
-            document.getElementById('infoPanel').classList.remove('active');
+
+        function getOrgIcon(type) {
+            const icons = {
+                '経済団体': '🏢',
+                '労働組合': '👷',
+                '業界団体': '🏭',
+                '思想団体': '📚',
+                '宗教団体': '⛩',
+                '市民団体': '👥',
+                '地元経済界': '🏙',
+                '医療団体': '🏥',
+                '支援団体': '🤝'
+            };
+            return icons[type] || '🏛';
         }
-        
-        function toggleLabels() {
-            showAllLabels = !showAllLabels;
-            if (chart && currentData) {
-                const option = chart.getOption();
-                option.series[0].data.forEach(node => {
-                    node.label.show = showAllLabels || node.value >= 5;
+
+        function closeDetail() {
+            document.getElementById('detailPanel').classList.remove('active');
+        }
+
+        function renderPartyAnalysis() {
+            const parties = currentData.parties;
+            const container = document.getElementById('partyCards');
+
+            container.innerHTML = Object.entries(parties).map(([name, party]) => {
+                const totalSeats = party.seats.衆議院 + party.seats.参議院;
+                return `
+                    <div class="party-card">
+                        <div class="party-card-header">
+                            <div class="party-card-color" style="background: ${party.color}"></div>
+                            <div>
+                                <div class="party-card-title">${name}</div>
+                                <div class="party-card-ideology">${party.ideology}</div>
+                            </div>
+                        </div>
+
+                        <div class="party-stats-row">
+                            <div class="party-stat">
+                                <div class="party-stat-value">${totalSeats}</div>
+                                <div class="party-stat-label">総議席</div>
+                            </div>
+                            <div class="party-stat">
+                                <div class="party-stat-value">${party.seats.衆議院}</div>
+                                <div class="party-stat-label">衆議院</div>
+                            </div>
+                            <div class="party-stat">
+                                <div class="party-stat-value">${party.seats.参議院}</div>
+                                <div class="party-stat-label">参議院</div>
+                            </div>
+                            <div class="party-stat">
+                                <div class="party-stat-value">${party.founded}</div>
+                                <div class="party-stat-label">結党年</div>
+                            </div>
+                        </div>
+
+                        <div class="spectrum-container">
+                            <div class="spectrum-labels">
+                                <span>リベラル</span>
+                                <span>中道</span>
+                                <span>保守</span>
+                            </div>
+                            <div class="spectrum-bar">
+                                <div class="spectrum-indicator" style="left: ${party.stance.conservative}%"></div>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase;">主要政策</div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                ${party.policies.map(p => `<span class="detail-tag">${p}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase;">支持基盤</div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                ${party.supporters.map(s => `<span class="org-interest">${s}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 8px; text-transform: uppercase;">沿革</div>
+                            <div class="party-history">${party.history}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderOrganizations(filter = 'all') {
+            const orgs = currentData.organizations;
+            const container = document.getElementById('orgCards');
+
+            const filteredOrgs = filter === 'all'
+                ? orgs
+                : orgs.filter(o => o.type === filter);
+
+            container.innerHTML = filteredOrgs.map(org => `
+                <div class="org-card">
+                    <div class="org-header">
+                        <div>
+                            <div class="org-name">${org.name}</div>
+                            <div class="org-full-name">${org.fullName}</div>
+                        </div>
+                        <span class="org-type">${org.type}</span>
+                    </div>
+
+                    <div class="spectrum-container">
+                        <div class="spectrum-labels">
+                            <span>リベラル</span>
+                            <span>中道</span>
+                            <span>保守</span>
+                        </div>
+                        <div class="spectrum-bar">
+                            <div class="spectrum-indicator" style="left: ${org.stance.conservative}%"></div>
+                        </div>
+                    </div>
+
+                    <div class="org-interests">
+                        ${org.interests.map(i => `<span class="org-interest">${i}</span>`).join('')}
+                    </div>
+
+                    <div class="org-supported">
+                        <div class="org-supported-label">支援政党</div>
+                        <div class="org-parties">
+                            ${org.supportedParties.map(p => `
+                                <span class="org-party-tag" style="background: ${getPartyColor(p)}20; color: ${getPartyColor(p)}">${p}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setupEventListeners() {
+            // Navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const view = item.dataset.view;
+                    switchView(view);
+
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
                 });
-                chart.setOption(option);
+            });
+
+            // Search
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                if (query.length < 1) {
+                    searchResults.classList.remove('active');
+                    return;
+                }
+
+                const results = currentData.nodes.filter(n =>
+                    n.name.toLowerCase().includes(query) ||
+                    (n.nameReading && n.nameReading.includes(query)) ||
+                    n.category.includes(query)
+                ).slice(0, 8);
+
+                if (results.length > 0) {
+                    searchResults.innerHTML = results.map(r => `
+                        <div class="search-result-item" onclick="selectSearchResult('${r.id}')">
+                            <div style="width: 8px; height: 8px; border-radius: 50%; background: ${getPartyColor(r.category)}"></div>
+                            <div>
+                                <div style="font-size: 13px;">${r.name}</div>
+                                <div style="font-size: 11px; color: var(--text-secondary);">${r.category} - ${r.position || ''}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                    searchResults.classList.add('active');
+                } else {
+                    searchResults.classList.remove('active');
+                }
+            });
+
+            searchInput.addEventListener('blur', () => {
+                setTimeout(() => searchResults.classList.remove('active'), 200);
+            });
+
+            // Organization filters
+            document.querySelectorAll('#orgFilters .filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('#orgFilters .filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderOrganizations(btn.dataset.filter);
+                });
+            });
+        }
+
+        function switchView(view) {
+            currentView = view;
+
+            document.getElementById('mainChart').style.display = view === 'network' ? 'block' : 'none';
+            document.getElementById('spectrumView').classList.toggle('active', view === 'spectrum');
+            document.getElementById('partyView').classList.toggle('active', view === 'party');
+            document.getElementById('orgView').classList.toggle('active', view === 'org');
+            document.getElementById('viewControls').style.display = view === 'network' ? 'flex' : 'none';
+
+            if (view === 'spectrum' && !spectrumChart) {
+                setTimeout(initSpectrumChart, 100);
+            }
+
+            if (view === 'network' && networkChart) {
+                networkChart.resize();
+            }
+            if (view === 'spectrum' && spectrumChart) {
+                spectrumChart.resize();
             }
         }
-        
+
+        function selectSearchResult(id) {
+            const member = currentData.nodes.find(n => n.id === id);
+            if (member) {
+                showMemberDetail(member);
+                if (currentView === 'network' && networkChart) {
+                    networkChart.dispatchAction({
+                        type: 'highlight',
+                        seriesIndex: 0,
+                        name: member.name
+                    });
+                }
+            }
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchResults').classList.remove('active');
+        }
+
         function highlightParty(partyName) {
-            if (chart) {
-                chart.dispatchAction({
+            if (currentView === 'network' && networkChart) {
+                const members = currentData.nodes.filter(n => n.category === partyName);
+                networkChart.dispatchAction({
                     type: 'highlight',
                     seriesIndex: 0,
-                    name: partyName
+                    dataIndex: members.map(m => currentData.nodes.indexOf(m))
                 });
-                
+
                 setTimeout(() => {
-                    chart.dispatchAction({
+                    networkChart.dispatchAction({
                         type: 'downplay',
                         seriesIndex: 0
                     });
                 }, 2000);
             }
         }
-        
-        // 初期化
+
+        function resetView() {
+            if (networkChart) {
+                networkChart.dispatchAction({ type: 'restore' });
+            }
+            closeDetail();
+        }
+
+        function toggleLabels() {
+            showAllLabels = !showAllLabels;
+            if (networkChart && currentData) {
+                const option = networkChart.getOption();
+                option.series[0].data = currentData.nodes.map(node => ({
+                    ...node,
+                    itemStyle: { color: getPartyColor(node.category) },
+                    label: {
+                        ...node.label,
+                        show: showAllLabels || (node.influence && node.influence > 70)
+                    }
+                }));
+                networkChart.setOption(option);
+            }
+        }
+
+        // Initialize
         loadData();
     </script>
 </body>

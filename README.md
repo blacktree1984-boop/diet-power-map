@@ -1,214 +1,170 @@
-# 🏛️ 国会パワーバランス可視化システム
+# 🏛️ 国会議員パワーマップ
 
-日本の衆議院議員の関係性とパワーバランスをインタラクティブに可視化するウェブアプリケーション。
+**日本の政治を可視化する** - 有権者や政治ジャーナリストのための国会議員分析ツール
 
-## 🎯 特徴
+## 🎯 コンセプト
 
-- **完全自動化**: GitHub Actionsで毎週自動更新
-- **サーバーレス**: GitHub Pagesで配信（DBサーバー不要）
-- **インタラクティブ**: マウス操作で自由に探索可能
-- **リアルタイム情報**: Wikipediaから最新データを自動取得
+有権者が投票する際、政治ジャーナリストが取材する際に参考にできる、日本の国会議員を多角的に分析・可視化するウェブサイトです。
 
-## 🚀 セットアップ
+### 可視化テーマ
 
-### 1. リポジトリの準備
+- **人脈ネットワーク**: 国会議員同士のつながりとパワーバランス
+- **政治スペクトラム**: 保守/リベラルの軸上での位置づけ
+- **政党分析**: 各党の議席数、歴史、政策傾向
+- **支援組織**: 裏についている企業・団体との関係
+
+## ✨ 主な機能
+
+### 📊 4つのビューモード
+
+1. **人脈ネットワーク** - 議員同士の関係性をフォースレイアウトで可視化
+2. **政治スペクトラム** - 保守度 vs 影響力の散布図で議員を配置
+3. **政党分析** - 各党の詳細情報（議席数、歴史、政策、支持基盤）
+4. **支援組織** - 経済団体、労働組合、業界団体などの一覧と支援政党
+
+### 🔍 議員詳細パネル
+
+各議員をクリックすると詳細情報を表示：
+- 基本情報（選挙区、当選回数、派閥）
+- 影響力スコア
+- 政治的スタンス（保守/リベラル）
+- 主要政策へのスタンス（憲法改正、安全保障、経済、エネルギー等）
+- 支援団体・関係組織
+
+### 🎨 その他の機能
+
+- **検索機能** - 議員名・政党名で即座に検索
+- **政党ハイライト** - サイドバーから政党をクリックでハイライト
+- **レスポンシブUI** - モダンなダークテーマ
+
+## 🚀 クイックスタート
+
+### ローカルで実行
 
 ```bash
 # リポジトリをクローン
 git clone <your-repo-url>
-cd <repo-name>
+cd diet-power-map
 
-# 必要なディレクトリ構造を確認
-# .github/workflows/update.yml
-# analyze.py
-# index.html
-```
+# 依存関係をインストール
+pip install -r requirements.txt
 
-### 2. GitHub Pagesの有効化
-
-1. GitHubリポジトリのSettings → Pages に移動
-2. Source を「GitHub Actions」に設定
-3. または、Branchを`main`、フォルダを`/ (root)`に設定
-
-### 3. 初回データ生成
-
-リポジトリのActionsタブから「Update Political Data」ワークフローを手動実行：
-
-1. Actions タブを開く
-2. 「Update Political Data」を選択
-3. 「Run workflow」をクリック
-
-数分後、`data.json`が生成されます。
-
-### 4. サイトへのアクセス
-
-GitHub Pagesが有効化されると、以下のURLでアクセス可能：
-
-```
-https://<username>.github.io/<repo-name>/
-```
-
-## 🧪 ローカルテスト
-
-### 必要な環境
-
-- Python 3.9以上
-- 以下のライブラリ:
-
-```bash
-pip install pandas networkx lxml html5lib
-```
-
-### テスト実行
-
-```bash
-# テストスクリプトの実行
-python test.py
-
-# analyze.pyの直接実行
+# データを生成
 python analyze.py
 
-# ローカルサーバーでindex.htmlを確認
+# ローカルサーバーを起動
 python -m http.server 8000
+
 # ブラウザで http://localhost:8000 を開く
 ```
 
-## 📁 ファイル構成
+### GitHub Pagesでホスティング
+
+1. GitHubリポジトリのSettings → Pages に移動
+2. Sourceを「GitHub Actions」または「Deploy from a branch (main)」に設定
+3. 数分後にURLが発行される
+
+## 📁 プロジェクト構成
 
 ```
-.
-├── .github/
-│   └── workflows/
-│       └── update.yml          # GitHub Actions設定
-├── analyze.py                  # データ取得・分析スクリプト
-├── index.html                  # フロントエンド
-├── test.py                     # テストスクリプト
-├── data.json                   # 生成されるデータファイル
-└── README.md                   # このファイル
+diet-power-map/
+├── index.html          # メインUI（4つのビューを含む）
+├── data.json           # 政治家・政党・組織のデータ
+├── analyze.py          # Wikipediaからデータを取得するスクリプト
+├── test.py             # テストスクリプト
+├── requirements.txt    # Python依存関係
+└── .github/
+    └── workflows/
+        └── update.yml  # 毎週自動更新のCI/CD
+```
+
+## 📊 データ構造
+
+### data.json
+
+```json
+{
+  "nodes": [        // 議員データ
+    {
+      "id": "...",
+      "name": "議員名",
+      "category": "政党名",
+      "politicalStance": { "conservative": 60, "liberal": 40 },
+      "policies": { "憲法改正": "賛成", ... },
+      "supporters": [{ "name": "団体名", "type": "経済団体" }],
+      "influence": 85
+    }
+  ],
+  "links": [...],       // 議員間の関係
+  "categories": [...],  // 政党カテゴリ
+  "parties": {...},     // 政党詳細情報
+  "organizations": [...], // 支援組織
+  "stats": {...}        // 統計情報
+}
 ```
 
 ## 🔧 技術スタック
 
-### バックエンド（データ収集）
-- **Python 3.11**: メイン言語
-- **pandas**: Wikipediaテーブルのスクレイピング
-- **NetworkX**: ネットワーク分析
-- **GitHub Actions**: 自動実行環境
-
-### フロントエンド（可視化）
-- **HTML5/CSS3**: UI構築
-- **Apache ECharts**: グラフ可視化ライブラリ
-- **バニラJavaScript**: インタラクション処理
-
-### インフラ
-- **GitHub Pages**: ホスティング
-- **GitHub Actions**: CI/CD
-
-## 📊 データソース
-
-- **Wikipedia「衆議院議員一覧」ページ**
-  - URL: https://ja.wikipedia.org/wiki/衆議院議員一覧
-  - 取得方法: pandas.read_html()
-  - 更新頻度: 毎週月曜日 午前9時(JST)
+| 領域 | 技術 |
+|------|------|
+| フロントエンド | HTML5, CSS3 (CSS Variables), Vanilla JS |
+| 可視化 | Apache ECharts 5.4.3 |
+| データ取得 | Python 3.11, pandas, NetworkX |
+| ホスティング | GitHub Pages |
+| CI/CD | GitHub Actions |
 
 ## 🎨 カスタマイズ
 
-### 更新頻度の変更
+### 政党カラーの変更
 
-`.github/workflows/update.yml`のcron設定を編集：
-
-```yaml
-schedule:
-  - cron: '0 0 * * 1'  # 毎週月曜日0時(UTC) = 9時(JST)
-```
-
-例：
-- 毎日: `'0 0 * * *'`
-- 毎月1日: `'0 0 1 * *'`
-
-### ビジュアルのカスタマイズ
-
-`index.html`の以下の部分を編集：
+`index.html` の `partyColors` オブジェクトを編集：
 
 ```javascript
-// 政党カラー
 const partyColors = {
     '自由民主党': '#e74c3c',
     '立憲民主党': '#3498db',
-    // ... 追加/変更
+    // カスタマイズ...
 };
+```
 
-// グラフのレイアウト
-force: {
-    repulsion: 150,      // ノード間の反発力
-    gravity: 0.1,        // 中心への引力
-    edgeLength: [50, 100] // エッジの長さ
+### データの追加・更新
+
+`data.json` を直接編集するか、`analyze.py` を修正してデータソースを変更できます。
+
+### 新しい組織の追加
+
+```json
+{
+  "id": "new_org",
+  "name": "組織名",
+  "fullName": "正式名称",
+  "type": "経済団体",
+  "stance": { "conservative": 50, "liberal": 50 },
+  "supportedParties": ["自由民主党"],
+  "interests": ["政策1", "政策2"]
 }
 ```
 
-### データ取得ロジックのカスタマイズ
-
-`analyze.py`の以下の関数を編集：
-
-- `normalize_party_name()`: 政党名の正規化ルール
-- `fetch_diet_members()`: データ取得・処理ロジック
-- ネットワーク構築ロジック（リング構造、ハブ構造など）
-
-## 🐛 トラブルシューティング
-
-### Q1: data.jsonが生成されない
-
-**A1**: テストスクリプトを実行して問題を特定：
-
-```bash
-python test.py
-```
-
-考えられる原因：
-- 必要なライブラリがインストールされていない
-- Wikipediaへのアクセスが失敗している
-- テーブル構造が変更された
-
-### Q2: GitHub Actionsが失敗する
-
-**A2**: Actionsのログを確認：
-
-1. Actionsタブを開く
-2. 失敗したワークフローをクリック
-3. エラーメッセージを確認
-
-よくある原因：
-- `pip install`の失敗 → `requirements.txt`を作成
-- 権限エラー → Settingsでpermissionsを確認
-
-### Q3: グラフが表示されない
-
-**A3**: ブラウザの開発者ツールでエラーを確認：
-
-1. F12で開発者ツールを開く
-2. Consoleタブでエラーメッセージを確認
-3. Networkタブで`data.json`が読み込まれているか確認
-
-## 🔒 セキュリティとプライバシー
-
-- 公開データ（Wikipedia）のみを使用
-- 個人情報の収集なし
-- サーバー側処理なし（完全静的サイト）
-- GitHubのセキュリティ機能を活用
-
-## 📈 今後の拡張案
+## 📈 今後の拡張予定
 
 - [ ] 参議院議員の追加
-- [ ] 過去データとの比較機能
-- [ ] 委員会情報の統合
-- [ ] 選挙区情報の可視化
-- [ ] モバイル最適化
-- [ ] データエクスポート機能
+- [ ] 政治資金データの統合
+- [ ] 国会での発言・投票履歴
+- [ ] 選挙区地図との連携
+- [ ] 時系列での変化を追跡
+- [ ] API化してデータ提供
+
+## 🔒 注意事項
+
+- このプロジェクトは**教育・研究目的**です
+- 政治的立場を示すものではありません
+- データは公開情報に基づいています
+- 正確性は保証されません。参考情報としてご利用ください
 
 ## 🤝 コントリビューション
 
-バグ報告や機能提案は Issue でお願いします。
-プルリクエストも歓迎します！
+- バグ報告や機能提案は Issue でお願いします
+- プルリクエスト歓迎！
 
 ## 📝 ライセンス
 
@@ -216,10 +172,9 @@ MIT License
 
 ## 🙏 謝辞
 
-- データソース: Wikipedia
-- 可視化ライブラリ: Apache ECharts
-- ホスティング: GitHub Pages
+- 可視化ライブラリ: [Apache ECharts](https://echarts.apache.org/)
+- ホスティング: [GitHub Pages](https://pages.github.com/)
 
 ---
 
-**注意**: このプロジェクトは教育・研究目的です。政治的立場を示すものではありません。
+**免責事項**: 本サイトの情報は参考情報であり、政治的判断の唯一の根拠とすべきではありません。実際の投票に際しては、複数の情報源を参照してください。
